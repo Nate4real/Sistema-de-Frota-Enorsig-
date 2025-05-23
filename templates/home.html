@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enorfrota Adm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        /* Reset e configurações globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: flex-start; /* Alinha ao topo, pode usar center para centralizar verticalmente */
+            min-height: 100vh;
+            background: #e0e0e0;
+            transition: 0.3s ease;
+            background-color: #00000010;
+        }
+
+        /* Ajuste da barra lateral para não ocupar espaço fixo na largura total */
+        .barra-lateral {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        /* Centraliza e limita a largura do conteúdo */
+        .conteudo {
+            margin-left: 270px;
+            margin-right: auto;
+            padding: 20px;
+            width: 100%;
+            max-width: 1100px; /* Limite de largura para centralizar */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;      /* Centraliza horizontalmente */
+            justify-content: center;  /* Centraliza verticalmente */
+            min-height: 100vh;        /* Garante altura mínima da tela */
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 1200px) {
+            .conteudo {
+                max-width: 90vw;
+            }
+        }
+        @media (max-width: 768px) {
+            .barra-lateral {
+                width: 200px;
+            }
+            .conteudo {
+                margin-left: 0;
+                max-width: 98vw;
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        @media (max-width: 576px) {
+            body {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .barra-lateral {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                left: -100%;
+                transition: left 0.3s ease-in-out;
+            }
+            .barra-lateral.mostrar {
+                left: 0;
+            }
+            .conteudo {
+                margin-left: 0;
+                padding: 10px;
+                max-width: 100vw;
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* Estilo da barra lateral */
+        .barra-lateral {
+            width: 250px;
+            background: #B00000;
+            color: #fff;
+            height: 100vh;
+            padding: 10px;
+            position: fixed;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .barra-lateral h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .barra-lateral ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .barra-lateral ul li {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            border-radius: 10px;
+        }
+
+        .barra-lateral ul li:hover,
+        .ativo {
+            background: #ffc9c925;
+        }
+
+        .barra-lateral ul li i {
+            font-size: 16px;
+        }
+
+        /* Estilo do conteúdo principal */
+        .conteudo {
+            margin-left: 270px;
+            padding: 20px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        /* Barra de pesquisa */
+        .barra-superior {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .barra-superior input {
+            width: 50%;
+            padding: 10px;
+            border: 2px solid #e1dbdb;
+            border-radius: 20px;
+            outline: none;
+            background-color: #f6f6f6;
+        }
+
+        .barra-superior i {
+            color: #902d2d;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Estilo dos cartões */
+        .servicos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;  
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 10px;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            color: #3e3e3e;
+        }
+
+        /* Estilo dos cartões no modo claro */
+        .ag-courses-item_link {
+            display: block;
+            padding: 30px 20px;
+            background-color: #ffffff; /* Fundo branco */
+            color: #606060; /* Texto preto */
+            overflow: hidden;
+            position: relative;
+            border-radius: 15px; /* Bordas arredondadas */
+            box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2); /* Sombra mais visível */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none; /* Remove sublinhado */
+        }
+
+        .ag-courses-item_link:hover {
+            transform: translateY(-5px); /* Elevação ao passar o mouse */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Sombra mais intensa ao passar o mouse */
+        }
+
+        .ag-courses-item_title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #535353; /* Texto preto no modo claro */
+            margin-bottom: 5px; /* Espaçamento menor entre o título e a descrição */
+            text-align: center;
+            text-decoration: none; /* Remove sublinhado */
+        }
+
+        .ag-courses-item_description {
+            font-size: 0.9rem; /* Tamanho menor para descrição */
+            color: #6c757d; /* Cor cinza no modo claro */
+            text-align: center;
+            margin-top: 0; /* Remove espaçamento extra */
+            line-height: 1.4; /* Melhor legibilidade */
+        }
+
+        /* Modo escuro - título e descrição */
+        body.modo-escuro .ag-courses-item_title {
+            color: #ffffff; /* Texto branco no modo escuro */
+        }
+
+        body.modo-escuro .ag-courses-item_description {
+            color: #b3b3b3; /* Texto branco suave no modo escuro */
+        }
+
+        body.modo-escuro .ag-courses-item_link {
+            background-color: #333333; /* Fundo escuro no modo escuro */
+            color: #ffffff; /* Texto branco no modo escuro */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra mais forte no modo escuro */
+        }
+
+        body.modo-escuro .ag-courses-item_link:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7); /* Sombra mais intensa ao passar o mouse */
+        }
+
+        body.modo-escuro .ag-courses-item_date-box {
+            color: #ffffff; /* Texto branco no modo escuro */
+        }
+
+        /* Estilo padrão para ocultar o texto */
+        .ag-courses-item_date-box {
+            opacity: 0; /* Oculta o texto inicialmente */
+            transition: opacity 0.3s ease; /* Transição suave */
+        }
+
+        /* Exibe o texto ao passar o mouse */
+        .ag-courses-item_link:hover .ag-courses-item_date-box {
+            opacity: 1; /* Exibe o texto ao passar o mouse */
+        }
+
+        /* Título de seção */
+        h2 {
+            text-align: center;
+            color: #111; /* Preto no modo claro */
+            margin-bottom: 30px;
+        }
+
+        body.modo-escuro h2 {
+            color: #fff; /* Branco no modo escuro */
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .barra-lateral {
+                width: 200px;
+            }
+
+            .conteudo {
+                margin-left: 210px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                flex-direction: column;
+            }
+
+            .barra-lateral {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                left: -100%;
+                transition: left 0.3s ease-in-out;
+            }
+
+            .menu-toggle {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background: #B00000;
+                color: white;
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                border-radius: 5px;
+                z-index: 1000;
+            }
+
+            .barra-lateral.mostrar {
+                left: 0;
+            }
+
+            .conteudo {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            .servicos {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        /* Modo escuro */
+        body.modo-escuro {
+            background-color: #191919;
+        }
+
+        body.modo-escuro .barra-lateral {
+            background: #B00000;
+        }
+
+        body.modo-escuro .card {
+            background: #333;
+            color: #fff;
+        }
+
+        body.modo-escuro .barra-superior input {
+            background-color: #1f1f1f;
+            color: #fff;
+            border-color: #353535;
+        }
+
+        body.modo-escuro h2 {
+            color: #ffffff;
+        }
+
+        /* Estilo do visor do usuário */
+        .informacoes-usuario {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: #8b0000;
+            padding: 15px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .avatar-usuario {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #5f515100;
+        }
+
+        .avatar-usuario img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .detalhes-usuario {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detalhes-usuario p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+
+        .detalhes-usuario p:nth-child(2) {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Estilo do botão de alternância */
+        .botao-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 25px;
+            background: #B00000;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .botao-toggle.ativo {
+            background: #B00000;
+        }
+
+        .botao-toggle .circulo {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .botao-toggle.ativo .circulo {
+            transform: translateX(25px);
+        }
+
+        /* Estilo dos novos serviços */
+        .ag-format-container {
+            width: 1142px;
+            margin: 0 auto;
+        }
+
+        .ag-courses_box {
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 50px 0;
+        }
+
+        .ag-courses_item {
+            flex-basis: calc(33.33333% - 30px);
+            margin: 0 15px 30px;
+            overflow: hidden;
+            border-radius: 28px;
+        }
+
+        .ag-courses-item_link {
+            display: block;
+            padding: 30px 20px;
+            background-color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ag-courses-item_link:hover,
+        .ag-courses-item_link:hover .ag-courses-item_date {
+            text-decoration: none;
+            color: #FFF;
+        }
+
+        .ag-courses-item_link:hover .ag-courses-item_bg {
+            transform: scale(10);
+            
+        }
+
+        .ag-courses-item_title {
+            min-height: 87px;
+            margin: 0 0 25px;
+            overflow: hidden;
+            font-weight: bold;
+            font-size: 30px;
+            color: #2b2b2b;
+            z-index: 2;
+            position: relative;
+        }
+
+        .ag-courses-item_date-box {
+            font-size: 18px;
+            color: #5d3535;
+            z-index: 2;
+            position: relative;
+        }
+
+        .ag-courses-item_date {
+            font-weight: bold;
+            color: hsl(0, 0%, 13%);
+            transition: color 0.5s ease;
+        }
+
+        .ag-courses-item_bg {
+            height: 128px;
+            width: 128px;
+            background-color: #a9021d;
+            z-index: 1;
+            position: absolute;
+            top: -75px;
+            right: -75px;
+            border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+
+        .ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+            background-color: #bf2032;
+
+        }
+
+        .ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+            background-color: #d43f47;
+        }
+
+        .ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+            background-color: #d43f47;
+        }
+
+        .ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+            background-color: #ea5d5b;
+        }
+
+        .ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+            background-color: #ff7b70;
+        }
+
+        @media only screen and (max-width: 979px) {
+            .ag-courses_item {
+                flex-basis: calc(50% - 30px);
+            }
+
+            .ag-courses-item_title {
+                font-size: 24px;
+            }
+        }
+
+        @media only screen and (max-width: 639px) {
+            .ag-courses_item {
+                flex-basis: 100%;
+            }
+
+            .ag-courses-item_title {
+                min-height: 72px;
+                line-height: 1;
+                font-size: 24px;
+            }
+
+            .ag-courses-item_link {
+                padding: 22px 40px;
+            }
+
+            .ag-courses-item_date-box {
+                font-size: 16px;
+            }
+        }
+
+        /* Painel de Indicadores */
+        .painel-indicadores {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: stretch;
+        }
+        .indicador-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px 30px;
+            min-width: 220px;
+            flex: 1 1 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: box-shadow 0.2s;
+            margin-bottom: 0;
+        }
+        .indicador-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #B00000;
+        }
+        .indicador-titulo {
+            font-size: 1rem;
+            color: #888;
+        }
+        .indicador-valor {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #222;
+        }
+        .indicador-extra {
+            font-size: 0.9rem;
+            color: #4caf50;
+            margin-top: 5px;
+        }
+        .indicador-extra.negativo {
+            color: #e53935;
+        }
+        .indicadores-finais {
+            display: flex;
+            gap: 20px;
+            flex: 3 1 660px;
+        }
+        @media (max-width: 1100px) {
+            .painel-indicadores {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .indicadores-finais {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* Gráficos e mapas */
+        .dashboard-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .dashboard-col {
+            flex: 1 1 350px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px;
+            min-width: 320px;
+        }
+        .dashboard-col h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #B00000;
+        }
+        .mapa-veiculos {
+            width: 100%;
+            height: 250px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Alertas */
+        .alertas-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .alerta-item {
+            background: #fff3e0;
+            color: #b26a00;
+            border-left: 5px solid #ff9800;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .alerta-item i {
+            font-size: 1.2rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .painel-indicadores, .dashboard-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Botões de menu e modo escuro -->
+    <button class="menu-toggle" onclick="alternarMenu()">☰ Menu</button>
+    <div class="botao-toggle" id="botaoToggle" onclick="alternarModoEscuro()">
+        <div class="circulo"></div>
+    </div>
+
+     <!-- Barra lateral -->
+    <div class="barra-lateral" id="barra-lateral">
+        <h2>EnorFrota</h2>
+        <ul>
+            <li class="ativo">
+                <a href="{{ url_for('index')}}">
+                <i class="fas fa-home"></i> Início
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('relatorios')}}">
+                <i class="fas fa-file-alt"></i> Relatórios
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('veiculos')}}">
+                <i class="fas fa-car"></i> Veículos
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('abastecimento')}}">
+                <i class="fas fa-gas-pump"></i> Abastecimento
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('usuarios_principal')}}">
+                <i class="fas fa-users"></i> Usuários
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('centrocusto')}}">
+                <i class="fas fa-dollar-sign"></i> Centro de Custo
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('base')}}">
+                <i class="fas fa-building"></i> Base
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('cartaocombustivel')}}">
+                <i class="fas fa-credit-card"></i> Cartão
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('logout')}}">
+                <i class="fas fa-sign-in-alt"></i> Sair
+                </a>
+            </li>
+            <!-- Exemplo de botão/aba modo escuro na barra lateral -->
+            <li class="modo-escuro-aba" onclick="alternarModoEscuro()">
+                <i class="fas fa-moon"></i>
+                <span>Modo Escuro</span>
+            </li>
+        </ul>
+
+        <div class="informacoes-usuario">
+            <div class="avatar-usuario">
+                <img src="img/avatar.jpg" alt="Foto do Usuário">
+            </div>
+            <div class="detalhes-usuario">
+                <p>{{session.user_name}}</p>
+                <p>Perfil: {{session.acesso}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="conteudo">
+        <h2>Painel de Gestão da Frota</h2>
+
+        <!-- Indicadores principais -->
+        <div class="painel-indicadores">
+            <div class="indicador-card">
+                <i class="fas fa-car"></i>
+                <span class="indicador-titulo">Veículos Totais</span>
+                <span class="indicador-valor" id="total-veiculos">{{ total_veiculos}}</span>
+            </div>
+            <div class="indicador-card">
+                <i class="fas fa-cogs"></i>
+                <span class="indicador-titulo">Em Manutenção</span>
+                <span class="indicador-valor" id="veiculos-manutencao">{{total_veiculos_inativos}}</span>
+                <span class="indicador-extra negativo">+2 este mês</span>
+            </div>
+            <!-- Agrupamento dos 3 últimos cards em uma linha -->
+            <div class="indicadores-finais">
+                <div class="indicador-card">
+                    <i class="fas fa-gas-pump"></i>
+                    <span class="indicador-titulo">Combustível (mês)</span>
+                    <span class="indicador-valor" id="combustivel-mes">{{ total_abastecimento}}L</span>
+                    <span class="indicador-extra">-5% vs mês anterior</span>
+                </div>
+                <div class="indicador-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span class="indicador-titulo">Custo Manutenção</span>
+                    <span class="indicador-valor" id="custo-manutencao">R$ 18.500</span>
+                    <span class="indicador-extra">+3% vs mês anterior</span>
+                </div>
+                <div class="indicador-card">
+                    <i class="fas fa-user-tie"></i>
+                    <span class="indicador-titulo">Pontuação Motoristas</span>
+                    <span class="indicador-valor" id="pontuacao-motoristas">8,7</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboards e gráficos -->
+        <div class="dashboard-row">
+            <!-- Removido o gráfico Status da Frota -->
+            <!-- Removido o gráfico Consumo de Combustível -->
+            <div class="dashboard-col">
+                <h3>Ocorrências</h3>
+                <canvas id="ocorrenciasChart"></canvas>
+            </div>
+            <!-- Removido o bloco de localização dos veículos -->
+            <div class="dashboard-col">
+                <h3>Alertas Recentes</h3>
+                <ul class="alertas-lista">
+                    <li class="alerta-item"><i class="fas fa-tools"></i> Manutenção preventiva: Veículo 23</li>
+                    <li class="alerta-item"><i class="fas fa-id-card"></i> Documento vencendo: Veículo 45 (05/2025)</li>
+                    <li class="alerta-item"><i class="fas fa-exclamation-triangle"></i> Multa registrada: Motorista João</li>
+                    <li class="alerta-item"><i class="fas fa-ambulance"></i> Acidente reportado: Veículo 12</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verifica o estado do modo escuro ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const isDarkMode = localStorage.getItem('modoEscuro') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('modo-escuro');
+                const botaoToggle = document.getElementById('botaoToggle');
+                if (botaoToggle) {
+                    botaoToggle.classList.add('ativo');
+                }
+            }
+
+            // Removido o gráfico Status da Frota
+
+            // Removido o gráfico Consumo de Combustível
+
+            // Gráfico Ocorrências
+            new Chart(document.getElementById('ocorrenciasChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Multas', 'Acidentes', 'Emergências'],
+                    datasets: [{
+                        label: 'Ocorrências',
+                        data: [5, 2, 1],
+                        backgroundColor: ['#ff9800', '#e53935', '#1976d2'],
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        });
+
+        function alternarModoEscuro() {
+            const botaoToggle = document.getElementById('botaoToggle');
+            const isDarkMode = document.body.classList.toggle('modo-escuro');
+            if (botaoToggle) {
+                botaoToggle.classList.toggle('ativo');
+            }
+            localStorage.setItem('modoEscuro', isDarkMode);
+        }
+
+        function alternarMenu() {
+            document.getElementById('barra-lateral').classList.toggle('mostrar');
+        }
+
+        function abrirRelatorios() {
+            window.location.href = 'relatorios.html';
+        }
+
+        function abrirAtualizarDados() {
+            window.location.href = 'atualizar_dados.html';
+        }
+    </script>
+</body>
+
+</html>

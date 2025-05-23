@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Enorsul</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+  {% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <div class="container">
+    <div class="esquerda" id="esquerda">
+      <div class="form-recuperar" id="formRecuperar">
+        <h2>Recuperar Senha</h2>
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail" required />
+        <button onclick="enviarRecuperacao()">Enviar código</button>
+        <span class="voltar" onclick="voltarLogin()">Voltar ao login</span>
+      </div>
+      <span id="tituloLogin">Login</span>
+    </div>
+
+    <div class="direita" id="direita">
+      <form method="POST" action="{{ url_for('login') }}" class="mx-auto" style="max-width: 400px;">
+        <div class="login-box">
+          <img src="{{url_for('static', filename='img/logo_enorsul.png')}}" alt="Logo" class="logo">
+          <input type="text" placeholder="E-mail*" name="emaillogin" />
+          <input type="password" placeholder="Senha*" name="password" />
+          <div class="opcoes">
+            <label><input type="checkbox"> Lembrar</label>
+            <a id="linkRecuperar">Esqueci a senha</a>
+          </div>
+          <div class="form-actions">
+            <button class="btn-entrar" type="submit">Entrar</button>
+          </div>
+      </form>
+    </div>
+
+  </div>
+  </div>
+  </div>
+
+  <script>
+    const btnRecuperar = document.getElementById("linkRecuperar");
+    const esquerda = document.getElementById("esquerda");
+    const direita = document.getElementById("direita");
+    const formRecuperar = document.getElementById("formRecuperar");
+    const tituloLogin = document.getElementById("tituloLogin");
+
+    btnRecuperar.addEventListener("click", () => {
+      esquerda.classList.add("expandida");
+      direita.classList.add("oculta");
+      formRecuperar.style.display = "block";
+      tituloLogin.style.display = "none";
+    });
+
+    function voltarLogin() {
+      esquerda.classList.remove("expandida");
+      direita.classList.remove("oculta");
+      formRecuperar.style.display = "none";
+      tituloLogin.style.display = "block";
+    }
+
+    function enviarRecuperacao() {
+      const email = document.getElementById("email").value;
+      if (email.trim() === "") {
+        alert("Por favor, digite seu e-mail.");
+        return;
+      }
+      alert(`Código de recuperação enviado para: ${email}`);
+    }
+  </script>
+</body>
+
+</html>

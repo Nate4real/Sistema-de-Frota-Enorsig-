@@ -1,0 +1,337 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:  sans-serif;
+}
+body {
+    display: flex;
+    background: #f8f8f8;
+    transition: 0.3s ease;
+}
+.sidebar {
+    width: 250px;
+    background: #B00000;
+    color: #fff;
+    height: 100vh;
+    padding: 10px;
+    position: fixed;
+    transition: all 0.3s;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar ul li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 10px;
+}
+.sidebar ul li:hover,
+.active {
+    background: #ffc9c925;
+}
+.sidebar ul li i {
+    font-size: 16px; /* Diminui o tamanho dos ícones */
+}
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    width: 100%;
+    transition: all 0.3s;
+}
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+.card h2 {
+    font-size: 1.9rem;
+    margin-bottom: 25px;
+    color: #474747;
+}
+.filters {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Define 6 colunas iguais */
+    gap: 30px; /* Espaçamento uniforme entre os elementos */
+    margin-bottom: 20px;
+    align-items: center; /* Alinha os itens verticalmente */
+}
+.filters div {
+    display: flex;
+    flex-direction: column; /* Mantém o rótulo acima do input */
+}
+.filters label {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+.filters input, .filters select, .filters button {
+    padding: 10px;
+    border-radius: 10px; /* Bordas arredondadas */
+    border: 1px solid #d1d1d1;
+    width: 100%;
+    font-size: 0.9rem;
+}
+.filters button {
+    background-color: #21b93f;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.filters button:hover {
+    background-color: #0056b3;
+}
+
+/* --- Tabela estilo cc.css --- */
+table {
+    width: 100%;
+    min-width: 900px;
+    max-width: 100%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 0 0 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    font-size: 13px;
+    overflow: hidden;
+}
+
+table th:first-child {
+    border-top-left-radius: 12px !important;
+}
+table th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+table th {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background: #B00000 !important;
+    color: #fff !important;
+    font-weight: 700;
+    border-bottom: 2px solid #b00000;
+    border-right: 1px solid #b00000;
+    text-transform: none !important;
+    letter-spacing: 0.5px;
+    padding: 6px 10px !important;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+table td {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+    white-space: nowrap;
+    color: #333;
+}
+
+table td:last-child,
+table th:last-child {
+    border-right: none;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
+
+table tr:hover {
+    background: #f7f7f7;
+}
+
+/* Estilos do Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15vh auto; /* Changed from 3% to 15vh to center vertically */
+    padding: 30px;
+    width: 60%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: modalFadeIn 0.3s ease;
+    position: relative; /* Added for better positioning */
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: flex-start; /* Changed from space-between to flex-start */
+    align-items: center;
+    margin-bottom: 30px;
+    border: none;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    position: relative; /* Added for close button positioning */
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.close {
+    position: absolute; /* Changed positioning */
+    right: 0; /* Position on the right */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Perfect vertical centering */
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #21b93f;
+    box-shadow: 0 0 0 3px rgba(33, 185, 63, 0.1);
+}
+
+.modal-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: right;
+    gap: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-cancelar,
+.btn-salvar {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-cancelar {
+    background-color: #f5f5f5;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+.btn-cancelar:hover {
+    background-color: #eee;
+    color: #333;
+}
+
+.btn-salvar {
+    background-color: #21b93f;
+    color: white;
+}
+
+.btn-salvar:hover {
+    background-color: #1ca736;
+    transform: translateY(-1px);
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-badge.ativa {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+}
+
+.status-badge.inativa {
+    background-color: #feeced;
+    color: #dc3545;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: #007bff;
+}
+
+.action-btn.delete {
+    color: #dc3545;
+}
+
+.action-btn:hover {
+    opacity: 0.7;
+}

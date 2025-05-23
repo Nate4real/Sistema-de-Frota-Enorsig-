@@ -1,0 +1,118 @@
+
+
+        /* Ajuste da barra lateral para não ocupar espaço fixo na largura total */
+        .barra-lateral {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        
+
+       
+
+        /* Estilo da barra lateral */
+        .barra-lateral {
+            width: 250px;
+            background: #B00000;
+            color: #fff;
+            height: 100vh;
+            padding: 10px;
+            position: fixed;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .barra-lateral h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            text-color
+        }
+
+        .barra-lateral ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .barra-lateral ul li {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            border-radius: 10px;
+        }
+
+        .barra-lateral ul li:hover,
+        .ativo {
+            background: #ffc9c925;
+        }
+
+        .barra-lateral ul li i {
+            font-size: 16px;
+        }
+
+        
+        /* Estilo do visor do usuário */
+        .informacoes-usuario {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: #8b0000;
+            padding: 15px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .avatar-usuario {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #5f515100;
+        }
+
+        .avatar-usuario img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .detalhes-usuario {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detalhes-usuario p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+
+        .detalhes-usuario p:nth-child(2) {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+  
+ 
+
+  a {
+    color: inherit;
+    text-decoration: none;
+}

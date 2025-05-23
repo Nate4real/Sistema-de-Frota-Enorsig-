@@ -1,0 +1,286 @@
+/* Barra lateral e layout principal */
+.barra-lateral {
+    width: 250px;
+    background: #B00000;
+    color: #fff;
+    height: 100vh;
+    padding: 10px;
+    position: fixed;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.barra-lateral h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.barra-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.barra-lateral ul li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 10px;
+}
+.barra-lateral ul li:hover,
+.ativo {
+    background: #ffc9c925;
+}
+.barra-lateral ul li i {
+    font-size: 16px;
+}
+
+/* Conteúdo principal */
+.conteudo {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #ebebeb;
+    border-radius: 10px;
+    width: calc(100% - 270px);
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+h2 {
+    margin-bottom: 20px;
+    color: #222222;
+}
+h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Formulários */
+.form-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.form-group div {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #444;
+}
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="number"], /* Adicionado para ano e hodometro_inicial */
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+}
+select {
+    cursor: pointer;
+}
+
+/* Status dos veículos */
+.status-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.status-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.status-btn i {
+    font-size: 16px;
+}
+.status-btn.ativo {
+    color: #28a745;
+    border-color: #28a745;
+}
+.status-btn.inativo {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+.status-btn.ferias {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+.status-btn.selecionado {
+    background-color: #12a83f;
+    color: #fff;
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 8px #007bff55;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+/* Botões de ação */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px 0;
+}
+.btn-cancelar,
+.btn-salvar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: 100px;
+}
+.btn-cancelar {
+    background-color: #f0f0f0;
+    color: #333;
+}
+.btn-salvar {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Input de arquivo customizado */
+.input-file-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.input-file-label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 4px;
+}
+.input-file-custom {
+    border: 2px dashed #bbb;
+    border-radius: 8px;
+    padding: 24px 0;
+    background: #fafbfc;
+    color: #888;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-size: 1rem;
+    position: relative;
+}
+.input-file-custom:hover, .input-file-custom:focus {
+    border-color: #007bff;
+    background: #f0f6ff;
+    color: #007bff;
+}
+.input-file-custom i {
+    font-size: 2rem;
+    margin-bottom: 6px;
+    display: block;
+}
+.input-file-hidden {
+    display: none;
+}
+.input-file-name {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Modal de confirmação */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+.modal-header .close {
+    cursor: pointer;
+    font-size: 20px;
+}
+.modal-body {
+    margin: 20px 0;
+}
+
+/* Modo escuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+body.dark-mode .barra-lateral {
+    background-color: #B00000;
+    color: #fff;
+}
+body.dark-mode .conteudo,
+body.dark-mode .container {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+body.dark-mode label {
+    color: #ffffff;
+}
+body.dark-mode .btn-cancelar,
+body.dark-mode .btn-salvar {
+    background-color: #333;
+    color: #ffffff;
+    border: 1px solid #555;
+}
+body.dark-mode .btn-cancelar:hover,
+body.dark-mode .btn-salvar:hover {
+    background-color: #444;
+}

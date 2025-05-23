@@ -1,0 +1,65 @@
+/* Tabela minimalista de viagens */
+.tabela-viagens {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    font-family: Roboto, sans-serif;
+}
+
+.tabela-viagens thead tr {
+    background: #f6f6f8;
+}
+
+.tabela-viagens th {
+    padding: 12px 8px;
+    text-align: left;
+    font-size: 1rem;
+    color: #272727;
+    font-weight: 700;
+    border-bottom: 1px solid #ececec;
+}
+
+.tabela-viagens th:last-child {
+    width: 40px;
+    background: #f6f6f8;
+}
+
+.tabela-viagens tbody tr:nth-child(even) {
+    background: #faf9fd;
+}
+
+.tabela-viagens tbody tr:nth-child(odd) {
+    background: #fff;
+}
+
+.tabela-viagens td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tabela-viagens td:last-child {
+    padding: 6px 0 6px 0;
+}
+
+.tabela-viagens .btn-editar {
+    background: #e6fbe6;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.tabela-viagens .btn-editar:hover {
+    background: #c7f5c7;
+}
+
+.tabela-viagens .btn-editar svg {
+    stroke: #1fa12e;
+}

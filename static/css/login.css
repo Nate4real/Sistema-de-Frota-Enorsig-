@@ -1,0 +1,217 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: url('../img/fundo.png') no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 900px;
+  height: 520px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.esquerda {
+  width: 30%;
+  background-color: #9e0909;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  transition: width 0.5s ease;
+  position: relative;
+  flex-direction: column;
+  padding: 40px;
+}
+
+.esquerda.expandida {
+  width: 100%;
+}
+
+.direita {
+  width: 70%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+  position: relative;
+}
+
+.direita.oculta {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.login-box {
+  max-width: 360px;
+  width: 100%;
+  padding: 40px;
+}
+
+.logo {
+  width: 120px;
+  margin: 0 auto 30px;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9e0909;
+}
+
+.opcoes {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.opcoes a {
+  color: #9e0909;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.opcoes a:hover {
+  text-decoration: underline;
+}
+
+.botoes {
+  width: 100%;
+}
+
+.btn-entrar {
+  width: 100%;
+  padding: 12px;
+  background-color: #9e0909;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-entrar:hover {
+  background-color: #7a0707;
+}
+
+/* Formulário de recuperação */
+.form-recuperar {
+display: none;
+width: 100%;
+max-width: 400px;
+color: white;
+animation: fadeIn 0.4s ease forwards;
+text-align: center; /* Adicionado para centralizar o conteúdo */
+}
+
+.form-recuperar h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-recuperar label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-recuperar input {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.form-recuperar button {
+background-color: #ffffff;
+color: rgb(154, 16, 16);
+border: none;
+border-radius: 8px;
+padding: 10px 20px; /* padding menor */
+font-size: 13px;     /* fonte um pouco menor */
+font-weight: 600;
+width: auto;         /* deixa o botão com largura ajustada ao conteúdo */
+cursor: pointer;
+transition: background-color 0.3s ease;
+display: block;
+margin: 0 auto;      /* centraliza o botão */
+}
+
+.form-recuperar button:hover {
+  background-color: #eee;
+}
+
+.voltar {
+margin-top: 20px;
+font-size: 14px;
+color: white;
+text-decoration: underline;
+cursor: pointer;
+display: inline-block;
+/* Remova alinhamento à esquerda */
+}
+
+#tituloLogin {
+  transition: opacity 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    width: 90%;
+    height: auto;
+  }
+
+  .esquerda,
+  .direita {
+    width: 100%;
+    height: 50%;
+  }
+
+  .esquerda.expandida {
+    height: 100%;
+  }
+
+  .direita.oculta {
+    display: none;
+  }
+}

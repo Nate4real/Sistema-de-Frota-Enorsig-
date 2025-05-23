@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css"> <!-- Added link to external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    
+    <title>EnorFrota</title>
+    <style>
+        /* Adicione seu CSS aqui */
+        .status-badge.Ativa { color: green; }
+        .status-badge.Inativa { color: red; }
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);}
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 400px;}
+        .close { float: right; font-size: 28px; font-weight: bold; cursor: pointer;}
+    </style>
+    
+</head>
+<body>
+    <!-- Botão de alternância de modo escuro -->
+    <div class="botao-toggle" id="botaoToggle" onclick="alternarModoEscuro()">
+        <div class="circulo"></div>
+    </div>
+
+    <!-- Barra lateral -->
+    <!-- Botões de menu e modo escuro -->
+    <button class="menu-toggle" onclick="alternarMenu()">☰ Menu</button>
+    <div class="botao-toggle" id="botaoToggle" onclick="alternarModoEscuro()">
+        <div class="circulo"></div>
+    </div>
+
+     <!-- Barra lateral -->
+    <div class="barra-lateral" id="barra-lateral">
+        <h2>EnorFrota</h2>
+        <ul>
+            <li class="ativo">
+                <a href="{{ url_for('index')}}">
+                <i class="fas fa-home"></i> Início
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('relatorios')}}">
+                <i class="fas fa-file-alt"></i> Relatórios
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('veiculos')}}">
+                <i class="fas fa-car"></i> Veículos
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('abastecimento')}}">
+                <i class="fas fa-gas-pump"></i> Abastecimento
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('usuarios_principal')}}">
+                <i class="fas fa-users"></i> Usuários
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('centrocusto')}}">
+                <i class="fas fa-dollar-sign"></i> Centro de Custo
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('base')}}">
+                <i class="fas fa-building"></i> Base
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('cartaocombustivel')}}">
+                <i class="fas fa-credit-card"></i> Cartão
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('logout')}}">
+                <i class="fas fa-sign-in-alt"></i> Sair
+                </a>
+            </li>
+            <!-- Exemplo de botão/aba modo escuro na barra lateral -->
+            <li class="modo-escuro-aba" onclick="alternarModoEscuro()">
+                <i class="fas fa-moon"></i>
+                <span>Modo Escuro</span>
+            </li>
+        </ul>
+
+        <div class="informacoes-usuario">
+            <div class="avatar-usuario">
+                <img src="img/avatar.jpg" alt="Foto do Usuário">
+            </div>
+            <div class="detalhes-usuario">
+                <p>{{session.user_name}}</p>
+                <p>Perfil: {{session.acesso}}</p>
+            </div>
+        </div>
+    </div>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="content" id="content">
+        <div class="card">
+            <h2>Bases Operacionais</h2>
+            <div class="filters">
+                <div>
+                    <label for="Pesquisar">Pesquisar Base</label>
+                    <input type="text" id="pesquisar" placeholder="Digite o nome da base...">
+                </div>
+                <div>
+                    <label for="estado">Estado</label>
+                    <select id="estado">
+                        <option>Todos os estados...</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="cidade">Cidade</label>
+                    <select id="cidade">
+                        <option>Todas as cidades</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option>Todos</option>
+                        <option>Ativa</option>
+                        <option>Inativa</option>
+                    </select>
+                </div>
+                <div>
+                </div>
+                <div>
+                    <label for="nova-base">&nbsp;</label>
+                    <button id="nova-base">+ Nova Base Operacional</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h2 style="font-size:1.5rem; text-align:center; margin-bottom:20px; color:#333;">Lista de Bases</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome da Base</th>
+                        <th>Estado</th>
+                        <th>Cidade</th>
+                        <th>Endereço</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados da tabela serão inseridos dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="modalNovaBase" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Nova Base Operacional</h2>
+            </div>
+            <form id="formNovaBase">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nomeBase">Nome da Base</label>
+                        <input type="text" id="nomeBase" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoBase">Estado</label>
+                        <select id="estadoBase" required>
+                            <option value="">Selecione o estado</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <!-- Adicione mais estados conforme necessário -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidadeBase">Cidade</label>
+                        <input type="text" id="cidadeBase" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="enderecoBase">Endereço</label>
+                        <input type="text" id="enderecoBase" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="statusBase">Status</label>
+                        <select id="statusBase" required>
+                            <option value="">Selecione o status</option>
+                            <option value="Ativa">Ativa</option>
+                            <option value="Inativa">Inativa</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('hidden');
+            content.classList.toggle('hidden');
+        }
+        
+        const modal = document.getElementById("modalNovaBase");
+        const btnNovaBase = document.getElementById("nova-base");
+        const span = document.getElementsByClassName("close")[0];
+
+        btnNovaBase.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        function fecharModal() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        let dadosTabela = [];
+
+        function carregarBases() {
+            fetch('http://localhost:5000/api/bases')
+                .then(res => res.json())
+                .then(bases => {
+                    const tbody = document.querySelector('tbody');
+                    tbody.innerHTML = '';
+                    bases.forEach(base => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${base.id}</td>
+                            <td>${base.nome}</td>
+                            <td>${base.cidade}</td>
+                            <td>${base.estado}</td>
+                            <td>${base.endereco}</td>
+                            <td><span class="status-badge ${base.status.toLowerCase()}">${base.status}</span></td>
+                            <td>
+                                <button onclick="toggleStatus(${base.id}, '${base.status}')" title="${base.status === 'Ativa' ? 'Inativar' : 'Ativar'}" style="background:none;border:none;cursor:pointer;">
+                                    <i class="fas fa-power-off" style="color:${base.status === 'Ativa' ? 'green' : 'red'};font-size:1.2em;"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(err => {
+                    alert("Erro ao carregar bases do banco de dados.");
+                    console.error(err);
+                });
+        }
+
+        function toggleStatus(id, statusAtual) {
+            const novoStatus = statusAtual === 'Ativa' ? 'Inativa' : 'Ativa';
+            fetch(`http://localhost:5000/api/bases/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: novoStatus })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error();
+                carregarBases();
+            })
+            .catch(err => {
+                alert("Erro ao atualizar status.");
+                console.error(err);
+            });
+        }
+
+        document.getElementById('formNovaBase').onsubmit = function(e) {
+            e.preventDefault();
+            const novaBase = {
+                nome: document.getElementById('nomeBase').value,
+                cidade: document.getElementById('cidadeBase').value,
+                estado: document.getElementById('estadoBase').value,
+                endereco: document.getElementById('enderecoBase').value,
+                status: document.getElementById('statusBase').value
+            };
+            fetch('http://localhost:5000/api/bases', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(novaBase)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error();
+                carregarBases();
+                fecharModal();
+                this.reset();
+            })
+            .catch(err => {
+                alert("Erro ao salvar base.");
+                console.error(err);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', carregarBases);
+    </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quilometragem - Quilometragem</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+<link rel="stylesheet" href="css/cadastrokm.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro_km.css') }}">
+
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <div class="top-bar-left">
+                <span class="menu-icon" id="open-menu">&#9776;</span>
+                <span class="title">Quilometragem</span>
+            </div>
+            <div class="top-bar-right">
+                <button class="add-btn">+ Add</button>
+            </div>
+        </div>
+    </div>
+    <!-- Menu lateral modal -->
+    <div id="side-modal-bg"
+        style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.18);z-index:1000;">
+    </div>
+    <div id="side-modal" style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        height:100vh;
+        width:75vw;
+        max-width:520px;
+        background:#fff;
+        box-shadow:2px 0 16px 0 #cfcbe6;
+        z-index:1001;
+        transition:transform 0.3s cubic-bezier(.4,0,.2,1);
+        transform:translateX(-100%);
+        border-radius: 0 18px 18px 0;
+        overflow-y:auto;
+    ">
+        <div style="padding:24px 20px 20px 24px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:bold;font-size:1.15rem;">Menu</span>
+            <button id="close-side-modal"
+                style="background:none;border:none;font-size:2rem;line-height:1;cursor:pointer;">&times;</button>
+        </div>
+        <div style="padding:0 24px 24px 24px;">
+            <div style="margin-bottom:18px;cursor:pointer;display:flex;align-items:center;gap:12px;"
+                onclick="window.location.href='{{url_for('cadastrokm')}}'">
+                <!-- Ícone lápis -->
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M15.5 3.5L18.5 6.5M2 20L6.5 19L18 7.5C18.3315 7.16848 18.3315 6.63152 18 6.3L15.7 4C15.3685 3.66848 14.8315 3.66848 14.5 4L3 15.5L2 20Z"
+                        stroke="#4b1e8a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Quilometragem
+            </div>
+            <div style="margin-bottom:18px;cursor:pointer;display:flex;align-items:center;gap:12px;"
+                onclick="window.location.href='{{url_for('cadastroabastecimento')}}'">
+                <!-- Ícone combustível -->
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="3" width="10" height="16" rx="2" stroke="#a60000" stroke-width="1.5" />
+                    <path d="M14 6L18 10V17C18 18.1046 17.1046 19 16 19H14" stroke="#a60000" stroke-width="1.5"
+                        stroke-linecap="round" />
+                    <path d="M8 7H10" stroke="#a60000" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                Abastecimento
+            </div>
+            <div style="margin-bottom:18px;cursor:pointer;display:flex;align-items:center;gap:12px;"
+                onclick="window.location.href='editar_viagem.html'">
+                <!-- Ícone ajuste (engrenagem) -->
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="11" r="4" stroke="#888" stroke-width="1.5" />
+                    <path
+                        d="M2 11h2M18 11h2M11 2v2M11 18v2M4.93 4.93l1.42 1.42M15.66 15.66l1.41 1.41M4.93 17.07l1.42-1.42M15.66 6.34l1.41-1.41"
+                        stroke="#888" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+                Editar Viagens
+            </div>
+            <div style="margin-bottom:18px;cursor:pointer;display:flex;align-items:center;gap:12px;"
+                onclick="window.location.href='{{url_for('index')}}'">
+                <!-- Ícone sair (porta com seta) -->
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 16L17 12L13 8" stroke="#a60000" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M17 12H7" stroke="#a60000" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5 4V18" stroke="#888" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+                Sair
+            </div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="envio-label" style="font-weight: bold; margin-bottom: 8px;">
+                Envios pendentes:
+            </div>
+            <div id="km-cards-container"></div>
+            <div id="no-envios" class="no-envios" style="display: none;">
+                Não há envios hoje.
+            </div>
+            <div class="km-total-card">
+                <div class="km-total-label">Quilometragem total atual:</div>
+                <div class="km-total-value" id="km-total-value">0 KM</div>
+                <div class="km-user" id="km-user"></div>
+            </div>
+            <div class="gif-tutorial-container">
+                <img src="{{ url_for('static', filename='img/gif.gif') }}" alt="Tutorial" class="gif-tutorial">
+            </div>
+        </div>
+    </div>
+    <div id="notification" class="notification"></div>
+    <div class="bottom-nav">
+        <div class="nav-item">
+            <!-- Ícone lápis SVG minimalista -->
+            <span class="icon">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="vertical-align: middle;"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M15.5 3.5L18.5 6.5M2 20L6.5 19L18 7.5C18.3315 7.16848 18.3315 6.63152 18 6.3L15.7 4C15.3685 3.66848 14.8315 3.66848 14.5 4L3 15.5L2 20Z"
+                        stroke="#a60000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </span>
+            KM
+        </div>
+        <div class="nav-item inactive" onclick="window.location.href='{{url_for('cadastroabastecimento')}}'">
+            <!-- Ícone galão de gasolina SVG minimalista -->
+            <span class="icon">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="vertical-align: middle;"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="3" width="10" height="16" rx="2" stroke="#888" stroke-width="1.5" />
+                    <path d="M14 6L18 10V17C18 18.1046 17.1046 19 16 19H14" stroke="#888" stroke-width="1.5"
+                        stroke-linecap="round" />
+                    <path d="M8 7H10" stroke="#888" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </span>
+            Combustível
+        </div>
+    </div>
+    <div class="modal-bg" id="modal-bg"></div>
+    <div class="modal-add" id="modal-add">
+        <div class="modal-header">
+            <span class="modal-title">Adicionar Quilometragem</span>
+            <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+        <div class="modal-content" id="modal-content">
+            <form id="form-saida">
+                <label>Data: <input type="date" id="data-saida" required></label>
+                <label>Placa: <input type="text" id="placa-saida" required maxlength="7"></label>
+                <label>Local Saída: <input type="text" id="local-saida" required></label>
+                <label>Hodômetro Saída: <input type="number" id="hodometro-saida" required></label>
+                <button type="submit">Salvar Saída</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const btnAdd = document.querySelector('.add-btn');
+        const modal = document.getElementById('modal-add');
+        const modalBg = document.getElementById('modal-bg');
+        const btnClose = document.getElementById('modal-close');
+        const modalContent = document.getElementById('modal-content');
+        const kmCardsContainer = document.getElementById('km-cards-container');
+        const kmTotalValue = document.getElementById('km-total-value');
+
+        let envios = JSON.parse(localStorage.getItem('enviosKm') || '[]');
+        let kmTotal = Number(localStorage.getItem('kmTotal')) || 0;
+
+        function renderEnvios() {
+            const noEnvios = document.getElementById('no-envios');
+            if (envios.length === 0) {
+                kmCardsContainer.style.display = 'none';
+                noEnvios.style.display = 'flex';
+            } else {
+                kmCardsContainer.style.display = '';
+                noEnvios.style.display = 'none';
+            }
+            kmCardsContainer.innerHTML = '';
+            envios.forEach((envio, idx) => {
+                // Formatar data para dd/mm/yyyy
+                let dataFormatada = '';
+                if (envio.data) {
+                    const [yyyy, mm, dd] = envio.data.split('-');
+                    dataFormatada = `${dd}/${mm}/${yyyy}`;
+                }
+                const card = document.createElement('div');
+                card.className = 'km-card';
+                card.innerHTML = `
+                    <div><b>Data:</b> ${dataFormatada}</div>
+                    <div><b>Placa:</b> ${envio.placa}</div>
+                    <div><b>Saída:</b> ${envio.hodometroSaida}</div>
+                    ${envio.hodometroRetorno ? `
+                        <div><b>Retorno:</b> ${envio.localRetorno} (${envio.hodometroRetorno} KM)</div>
+                        <div><b>KM Rodada:</b> ${envio.kmRodada} KM</div>
+                    ` : `<button onclick="finalizarEnvio(${idx})" title="Finalizar">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.5 3.5L18.5 6.5M2 20L6.5 19L18 7.5C18.3315 7.16848 18.3315 6.63152 18 6.3L15.7 4C15.3685 3.66848 14.8315 3.66848 14.5 4L3 15.5L2 20Z" stroke="#a60000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>`}
+                `;
+                kmCardsContainer.appendChild(card);
+            });
+            kmTotalValue.textContent = kmTotal + ' KM';
+        }
+
+        function showNotification(msg) {
+            const notification = document.getElementById('notification');
+            notification.textContent = msg;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2500);
+        }
+
+        window.finalizarEnvio = function (idx) {
+            // Modal simples para retorno
+            const envio = envios[idx];
+            const retornoModal = document.createElement('div');
+            retornoModal.className = 'modal-add show';
+            retornoModal.innerHTML = `
+                <div class="modal-header">
+                    <span class="modal-title">Finalizar Retorno</span>
+                    <button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+                <form id="form-retorno" style="display: flex; flex-direction: column; gap: 12px;">
+                    <label>Local Retorno: <input type="text" id="local-retorno" required></label>
+                    <label>Hodômetro Retorno: <input type="number" id="hodometro-retorno" required></label>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button type="button" id="excluir-envio" style="background: #fff; color: #a60000; border: 1px solid #a60000;">Excluir envio</button>
+                        <button type="submit">Salvar Retorno</button>
+                    </div>
+                </form>
+            `;
+            document.body.appendChild(retornoModal);
+
+            // Excluir envio
+            retornoModal.querySelector('#excluir-envio').onclick = function () {
+                if (confirm('Tem certeza que deseja excluir este envio?')) {
+                    envios.splice(idx, 1);
+                    localStorage.setItem('enviosKm', JSON.stringify(envios));
+                    retornoModal.remove();
+                    renderEnvios();
+                }
+            };
+
+            retornoModal.querySelector('#form-retorno').onsubmit = function (e) {
+                e.preventDefault();
+                envio.localRetorno = document.getElementById('local-retorno').value;
+                envio.hodometroRetorno = Number(document.getElementById('hodometro-retorno').value);
+                envio.kmRodada = envio.hodometroRetorno - envio.hodometroSaida;
+                kmTotal += envio.kmRodada;
+                localStorage.setItem('kmTotal', kmTotal);
+                localStorage.setItem('enviosKm', JSON.stringify(envios));
+                retornoModal.remove();
+                // Remove o card do envio finalizado
+                envios.splice(idx, 1);
+                localStorage.setItem('enviosKm', JSON.stringify(envios));
+                renderEnvios();
+                showNotification('Quilometragem finalizada com sucesso!');
+            };
+        };
+
+        function openModal() {
+            modal.classList.add('show');
+            modalBg.classList.add('show');
+        }
+        function closeModal() {
+            modal.classList.remove('show');
+            modalBg.classList.remove('show');
+        }
+        btnAdd.onclick = openModal;
+        btnClose.onclick = closeModal;
+        modalBg.onclick = closeModal;
+
+        // Salvar saída
+        document.getElementById('form-saida').onsubmit = function (e) {
+            e.preventDefault();
+            const envio = {
+                data: document.getElementById('data-saida').value,
+                placa: document.getElementById('placa-saida').value,
+                localSaida: document.getElementById('local-saida').value,
+                hodometroSaida: Number(document.getElementById('hodometro-saida').value)
+            };
+            envios.push(envio);
+            localStorage.setItem('enviosKm', JSON.stringify(envios));
+            closeModal();
+            renderEnvios();
+        };
+
+        // Menu lateral modal
+        const openMenu = document.getElementById('open-menu');
+        const sideModal = document.getElementById('side-modal');
+        const sideModalBg = document.getElementById('side-modal-bg');
+        const closeSideModal = document.getElementById('close-side-modal');
+
+        function showSideModal() {
+            sideModal.style.display = 'block';
+            sideModalBg.style.display = 'block';
+            setTimeout(() => {
+                sideModal.style.transform = 'translateX(0)';
+            }, 10);
+        }
+        function hideSideModal() {
+            sideModal.style.transform = 'translateX(-100%)';
+            setTimeout(() => {
+                sideModal.style.display = 'none';
+                sideModalBg.style.display = 'none';
+            }, 300);
+        }
+        openMenu.onclick = showSideModal;
+        closeSideModal.onclick = hideSideModal;
+        sideModalBg.onclick = hideSideModal;
+
+        // Função para definir o nome do usuário (perfil)
+        function setUserName(nome) {
+            document.getElementById('km-user').textContent = nome;
+        }
+
+        // Exemplo: depois você pode substituir por uma chamada ao backend/SQL
+        setUserName('Fernanda Cordeiro Angelo de Souza');
+
+        renderEnvios();
+    </script>
+</body>
+
+</html>
+```

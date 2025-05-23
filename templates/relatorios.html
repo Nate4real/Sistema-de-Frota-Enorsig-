@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnorFrota</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/relatorio.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/relatorio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+</head>
+<body>
+    <!-- Botão de alternância de modo escuro -->
+    <div class="botao-toggle" id="botaoToggle" onclick="alternarModoEscuro()">
+        <div class="circulo"></div>
+    </div>
+
+    <!-- Barra lateral -->
+    <!-- Botões de menu e modo escuro -->
+    <button class="menu-toggle" onclick="alternarMenu()">☰ Menu</button>
+    <div class="botao-toggle" id="botaoToggle" onclick="alternarModoEscuro()">
+        <div class="circulo"></div>
+    </div>
+
+ <!-- Barra lateral -->
+    <div class="barra-lateral" id="barra-lateral">
+        <h2>EnorFrota</h2>
+        <ul>
+            <li class="ativo">
+                <a href="{{ url_for('index')}}">
+                <i class="fas fa-home"></i> Início
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('relatorios')}}">
+                <i class="fas fa-file-alt"></i> Relatórios
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('veiculos')}}">
+                <i class="fas fa-car"></i> Veículos
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('abastecimento')}}">
+                <i class="fas fa-gas-pump"></i> Abastecimento
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('usuarios_principal')}}">
+                <i class="fas fa-users"></i> Usuários
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('centrocusto')}}">
+                <i class="fas fa-dollar-sign"></i> Centro de Custo
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('base')}}">
+                <i class="fas fa-building"></i> Base
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('cartaocombustivel')}}">
+                <i class="fas fa-credit-card"></i> Cartão
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('logout')}}">
+                <i class="fas fa-sign-in-alt"></i> Sair
+                </a>
+            </li>
+            <!-- Exemplo de botão/aba modo escuro na barra lateral -->
+            <li class="modo-escuro-aba" onclick="alternarModoEscuro()">
+                <i class="fas fa-moon"></i>
+                <span>Modo Escuro</span>
+            </li>
+        </ul>
+
+        <div class="informacoes-usuario">
+            <div class="avatar-usuario">
+                <img src="img/avatar.jpg" alt="Foto do Usuário">
+            </div>
+            <div class="detalhes-usuario">
+                <p>{{session.user_name}}</p>
+                <p>Perfil: {{session.acesso}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="conteudo">
+        <div class="cartao">
+            <h2>Relatórios de Quilometragem</h2>
+            <div class="filtros">
+                <div>
+                    <label for="pesquisar">Pesquisar Motorista</label>
+                    <input type="text" id="pesquisar" placeholder="Digite o nome...">
+                </div>
+                <div>
+                    <label for="placa-veiculo">Placa</label>
+                    <input type="text" id="placa-veiculo" placeholder="Digite a placa...">
+                </div>
+                <div>
+                    <label for="placa-cartao">Placa Cartão</label>
+                    <input type="text" id="placa-cartao" placeholder="Digite a placa do cartão...">
+                </div>
+                <div>
+                    <label for="base">Base</label>
+                    <select id="base">
+                        <option>Escolha a Base</option>
+                        <option value="BASE1">BASE BEB VEI</option>
+                        <option value="BASE2">BASE PR CAS V</option>
+                        <option value="BASE3">BASE PR V</option>
+                        <option value="BASE4">BASE RJ V</option>
+                        <option value="BASE5">BASE SA V</option>
+                        <option value="BASE6">BASE SERT V</option>
+                        <option value="BASE7">BASE SM VEI</option>
+                        <option value="BASE8">BASE SP SEDE V</option>
+                        <option value="BASE9">BASE SP V CLA V</option>
+                        <option value="BASE10">BASE SP V ESP V</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="centro-custo">Centro de Custo</label>
+                    <select id="centro-custo">
+                        <option>Escolha o CC</option>
+                        <option value="CC1">104</option>
+                        <option value="CC2">108</option>
+                        <option value="CC7">498</option>
+                        <option value="CC3">500</option>
+                        <option value="CC4">531</option>
+                        <option value="CC5">536</option>
+                        <option value="CC6">550</option>
+                        <option value="CC7">590</option>
+                        <option value="CC8">610</option>
+                    </select>
+                </div>
+                <div class="botoes">
+                    <button>Filtrar</button>
+                    <button>Limpar</button>
+                </div>
+            </div>
+        </div>
+        <div class="tabela-scroll">
+            <table id="tabelaPrincipal">
+                <thead>
+                    <tr>
+                        <th>Centro Custo</th>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>Placa</th>
+                        <th>Base</th>
+                        <th>Hodometro Inicial</th>
+                        <th>Hodometro Final</th>
+                        <th>Total</th>
+                        <th>Placa Cartão</th>
+                        <th>Local Inicial</th>
+                        <th>Local Final</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>104</td>
+                        <td>2025-04-10</td>
+                        <td>João Silva</td>
+                        <td>ABC-1234</td>
+                        <td>BASE SP SEDE V</td>
+                        <td>1000</td>
+                        <td>1200</td>
+                        <td>200</td>
+                        <td>1234-5678</td>
+                        <td>São Paulo</td>
+                        <td>Campinas</td>
+                        <td>
+                            <span class="acoes-tabela">
+                                <i class="fas fa-edit btn-acao editar" title="Editar" onclick="abrirModal(this)"></i>
+                                <i class="fas fa-file-pdf btn-acao pdf" title="Relatório" onclick="gerarRelatorio(this)"></i>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="conteudo-modal">
+            <span class="fechar" onclick="fecharModal()">&times;</span>
+            <h2>Editar Registro</h2>
+            <div class="layout-modal">
+                <!-- Dados do Registro conforme a tabela SQL -->
+                <div class="dados-viagem">
+                    <h3>Dados da Viagem</h3>
+                    <div class="grupo-formulario">
+                        <label for="modal-centro-custo">Centro Custo *</label>
+                        <input type="text" id="modal-centro-custo" placeholder="Digite o centro de custo" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-data">Data *</label>
+                        <input type="date" id="modal-data" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-nome">Nome *</label>
+                        <input type="text" id="modal-nome" placeholder="Digite o nome do motorista" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-placa">Placa *</label>
+                        <input type="text" id="modal-placa" placeholder="Digite a placa" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-base">Base *</label>
+                        <input type="text" id="modal-base" placeholder="Digite a base" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-placa-cartao">Placa Cartão *</label>
+                        <input type="text" id="modal-placa-cartao" placeholder="Digite a placa do cartão" required>
+                    </div>
+                </div>
+                <div class="dados-destino">
+                    <h3>Dados de Destino</h3>
+                    <div class="grupo-formulario">
+                        <label for="modal-hod-inicial">Hodometro Inicial *</label>
+                        <input type="number" id="modal-hod-inicial" placeholder="KM inicial" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-hod-final">Hodometro Final *</label>
+                        <input type="number" id="modal-hod-final" placeholder="KM final" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-total">Total *</label>
+                        <input type="number" id="modal-total" placeholder="Total KM" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-local-inicial">Local Inicial *</label>
+                        <input type="text" id="modal-local-inicial" placeholder="Digite o local inicial" required>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="modal-local-final">Local Final *</label>
+                        <input type="text" id="modal-local-final" placeholder="Digite o local final" required>
+                    </div>
+                </div>
+            </div>
+            <button onclick="salvarEdicao()">Salvar</button>
+        </div>
+    </div>
+    <div id="modalRelatorio" class="modal">
+        <div class="conteudo-modal">
+            <span class="fechar" onclick="fecharModalRelatorio()">&times;</span>
+            <h2>Relatórios do Motorista</h2>
+            <!-- Container de Filtros -->
+            <div class="filtros-relatorio">
+                <div class="grupo-filtros-relatorio">
+                    <div class="item-filtro-relatorio">
+                        <label for="filtro-data-inicio">Data de Início</label>
+                        <input type="date" id="filtro-data-inicio">
+                    </div>
+                    <div class="item-filtro-relatorio">
+                        <label for="filtro-data-final">Data Final</label>
+                        <input type="date" id="filtro-data-final">
+                    </div>
+                    <div class="botoes-filtros-relatorio">
+                        <button onclick="filtrarRelatorio()">Filtrar</button>
+                        <button onclick="limparFiltro()">Limpar</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Tabela de Relatórios -->
+            <div class="tabela-scroll">
+                <table id="tabelaRelatorio">
+                    <thead>
+                        <tr>
+                            <th>ID CENTRO DE CUSTO</th>
+                            <th>DATA</th>
+                            <th>MOTORISTA</th>
+                            <th>PLACA VEÍCULO</th>
+                            <th>ID CARTÃO</th>
+                            <th>BASE</th> 
+                            <th>DESTINO</th>
+                            <th>KM SAÍDA</th>
+                            <th>KM CHEGADA</th>
+                            <th>KM TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaRelatorioMotorista">
+                        <!-- Exemplo de linha -->
+                        <tr>
+                            <td>2025-04-10</td>
+                            <td>João Silva</td>
+                            <td>ABC-1234</td>
+                            <td>1234-5678</td>
+                            <td>BASE SP SEDE V</td>
+                            <td>São Paulo</td>
+                            <td>1000</td>
+                            <td>1200</td>
+                            <td>200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Adicione este elemento dentro do modalRelatorio -->
+            <div id="resultadoTotalKm" style="margin-top: 20px; text-align: center; font-size: 1.2rem; font-weight: bold; color: #4CAF50; background: #f9f9f9; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                <!-- O total será exibido aqui -->
+            </div>
+        </div>
+    </div>
+    <script>
+        let linhaAtual; // Variável para armazenar a linha atual sendo editada
+
+        function abrirModal(botao) {
+            const linha = botao.closest("tr");
+            linhaAtual = linha;
+
+            document.getElementById("modal-centro-custo").value = linha.cells[0].textContent.trim();
+            document.getElementById("modal-data").value = linha.cells[1].textContent.trim();
+            document.getElementById("modal-nome").value = linha.cells[2].textContent.trim();
+            document.getElementById("modal-placa").value = linha.cells[3].textContent.trim();
+            document.getElementById("modal-base").value = linha.cells[4].textContent.trim();
+            document.getElementById("modal-hod-inicial").value = linha.cells[5].textContent.trim();
+            document.getElementById("modal-hod-final").value = linha.cells[6].textContent.trim();
+            document.getElementById("modal-total").value = linha.cells[7].textContent.trim();
+            document.getElementById("modal-placa-cartao").value = linha.cells[8].textContent.trim();
+            document.getElementById("modal-local-inicial").value = linha.cells[9].textContent.trim();
+            document.getElementById("modal-local-final").value = linha.cells[10].textContent.trim();
+
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function fecharModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        function salvarEdicao() {
+            if (!linhaAtual) return;
+
+            linhaAtual.cells[0].textContent = document.getElementById("modal-centro-custo").value;
+            linhaAtual.cells[1].textContent = document.getElementById("modal-data").value;
+            linhaAtual.cells[2].textContent = document.getElementById("modal-nome").value;
+            linhaAtual.cells[3].textContent = document.getElementById("modal-placa").value;
+            linhaAtual.cells[4].textContent = document.getElementById("modal-base").value;
+            linhaAtual.cells[5].textContent = document.getElementById("modal-hod-inicial").value;
+            linhaAtual.cells[6].textContent = document.getElementById("modal-hod-final").value;
+            linhaAtual.cells[7].textContent = document.getElementById("modal-total").value;
+            linhaAtual.cells[8].textContent = document.getElementById("modal-placa-cartao").value;
+            linhaAtual.cells[9].textContent = document.getElementById("modal-local-inicial").value;
+            linhaAtual.cells[10].textContent = document.getElementById("modal-local-final").value;
+
+            fecharModal();
+        }
+
+        function gerarRelatorio(botao) {
+            // Pega o nome do motorista da linha clicada
+            const linha = botao.closest("tr");
+            const nomeMotorista = linha.cells[2].textContent.trim();
+
+            // Seleciona todas as linhas da tabela principal
+            const linhas = document.querySelectorAll(".tabela-scroll tbody tr");
+
+            // Monta as linhas do relatório apenas para o motorista selecionado
+            let html = "";
+            linhas.forEach(l => {
+                if (l.cells[2].textContent.trim() === nomeMotorista) {
+                    html += `
+                        <tr>
+                            <td>${l.cells[1].textContent}</td>
+                            <td>${l.cells[2].textContent}</td>
+                            <td>${l.cells[3].textContent}</td>
+                            <td>${l.cells[8].textContent}</td>
+                            <td>${l.cells[4].textContent}</td>
+                            <td>${l.cells[10].textContent}</td>
+                            <td>${l.cells[5].textContent}</td>
+                            <td>${l.cells[6].textContent}</td>
+                            <td>${l.cells[7].textContent}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            // Atualiza o corpo da tabela do modal de relatório
+            document.getElementById("tabelaRelatorioMotorista").innerHTML = html;
+
+            // Exibe o modal
+            document.getElementById("modalRelatorio").style.display = "block";
+        }
+
+        function fecharModalRelatorio() {
+            document.getElementById("modalRelatorio").style.display = "none";
+        }
+
+        function filtrarRelatorio() {
+            // Implementação futura após conexão com SQL
+            document.getElementById("resultadoTotalKm").innerHTML = `<span>Filtro disponível após integração com banco de dados.</span>`;
+        }
+
+        function limparFiltro() {
+            document.getElementById("filtro-data-inicio").value = "";
+            document.getElementById("filtro-data-final").value = "";
+            document.getElementById("resultadoTotalKm").innerHTML = "";
+        }
+
+        window.onclick = function(evento) {
+            const modal = document.getElementById("modal");
+            const modalRelatorio = document.getElementById("modalRelatorio");
+            if (evento.target === modal) fecharModal();
+            if (evento.target === modalRelatorio) fecharModalRelatorio();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const isDarkMode = localStorage.getItem('modoEscuro') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('modo-escuro');
+                document.getElementById('botaoToggle').classList.add('ativo');
+            }
+        });
+
+        function alternarModoEscuro() {
+            const botaoToggle = document.getElementById('botaoToggle');
+            const isDarkMode = document.body.classList.toggle('modo-escuro');
+            botaoToggle.classList.toggle('ativo');
+            localStorage.setItem('modoEscuro', isDarkMode);
+        }
+
+        function filtrarTabelaPrincipal() {
+            const motoristaFiltro = document.getElementById("pesquisar").value.toLowerCase();
+            const placaFiltro = document.getElementById("placa-veiculo").value.toLowerCase();
+            const placaCartaoFiltro = document.getElementById("placa-cartao").value.toLowerCase();
+            const baseFiltro = document.getElementById("base").value.toLowerCase();
+            const ccFiltro = document.getElementById("centro-custo").value.toLowerCase();
+
+            const linhas = document.querySelectorAll(".tabela-scroll tbody tr");
+            linhas.forEach(linha => {
+                const motorista = linha.cells[2].textContent.toLowerCase();
+                const placa = linha.cells[3].textContent.toLowerCase();
+                const placaCartao = linha.cells[4].textContent.toLowerCase();
+                const base = linha.cells[5].textContent.toLowerCase();
+
+                let mostrar = true;
+                if (motoristaFiltro && !motorista.includes(motoristaFiltro)) mostrar = false;
+                if (placaFiltro && !placa.includes(placaFiltro)) mostrar = false;
+                if (placaCartaoFiltro && !placaCartao.includes(placaCartaoFiltro)) mostrar = false;
+                if (baseFiltro && baseFiltro !== "escolha a base" && !base.includes(baseFiltro)) mostrar = false;
+
+                linha.style.display = mostrar ? "" : "none";
+            });
+        }
+
+        document.querySelector('.botoes button').onclick = filtrarTabelaPrincipal;
+
+        document.querySelectorAll('.botoes button')[1].onclick = function() {
+            document.getElementById("pesquisar").value = "";
+            document.getElementById("placa-veiculo").value = "";
+            document.getElementById("placa-cartao").value = "";
+            document.getElementById("base").selectedIndex = 0;
+            document.getElementById("centro-custo").selectedIndex = 0;
+            const linhas = document.querySelectorAll(".tabela-scroll tbody tr");
+            linhas.forEach(linha => {
+                linha.style.display = "";
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica;
+}
+
+body {
+    background: #f5f5f5;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.container-main {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Barra lateral */
+.barra-lateral {
+    width: 250px;
+    background: #B00000;
+    color: #fff;
+    height: 100vh;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.barra-lateral h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.barra-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.barra-lateral ul li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.barra-lateral ul li:hover,
+.barra-lateral ul li.ativo {
+    background: #ffc9c925;
+}
+
+.barra-lateral ul li i {
+    font-size: 16px;
+}
+
+.informacoes-usuario {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #8b0000;
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.avatar-usuario {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #5f515100;
+}
+
+.avatar-usuario img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.detalhes-usuario {
+    display: flex;
+    flex-direction: column;
+}
+
+.detalhes-usuario p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    font-weight: bold;
+}
+
+.detalhes-usuario p:nth-child(2) {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Botão de alternância modo escuro */
+.botao-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 25px;
+    background: #B00000;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+}
+
+.botao-toggle.ativo {
+    background: #B00000;
+}
+
+.botao-toggle .circulo {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.botao-toggle.ativo .circulo {
+    transform: translateX(25px);
+}
+
+/* Botão menu mobile */
+.menu-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: #B00000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1001;
+    display: none;
+}
+
+/* Botões com Hover Animado */
+.content-area {
+    flex: 1;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: 40px;
+}
+
+.button-group {
+    position: relative;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    width: 320px;
+    margin: 0 auto;
+    margin-top: 0;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.3s, background 0.3s;
+    border-radius: 0;
+    color: #5e3d3d;
+    font-weight: bold;
+}
+
+.btn.ativo {
+    color: #fff !important;
+    background: #c01c1c !important;
+    border-radius: 20px 0 0 20px !important;
+}
+
+.btn:hover {
+    color: #b30d0d;
+}
+
+.btn:first-child {
+    border-radius: 20px 0 0 20px;
+}
+
+.btn:last-child {
+    border-radius: 0 20px 20px 0;
+}
+
+.hover-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% / 3);
+    height: 100%;
+    background-color: #c01c1c;
+    z-index: 0;
+    transition: left 0.3s ease;
+    border-radius: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .barra-lateral {
+        width: 200px;
+    }
+
+    .content-area {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-main {
+        flex-direction: column;
+    }
+
+    .barra-lateral {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        left: -100%;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+    }
+
+    .barra-lateral.mostrar {
+        left: 0;
+    }
+
+    .content-area {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* Modo escuro */
+body.modo-escuro {
+    background-color: #ffffff;
+}
+
+body.modo-escuro .barra-lateral {
+    background: #B00000;
+}
+
+body.modo-escuro .button-group {
+    background: #222;
+}
+
+body.modo-escuro .btn {
+    color: #fff;
+}
+
+.cadastro-container {
+    margin-top: 32px;
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 32px;
+}
+
+.cadastro-container h2 {
+    color: #B00000;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    letter-spacing: 0.2px;
+}
+
+.cadastro-container .container {
+    margin-bottom: 18px;
+}
+
+.cadastro-container .container h3 {
+    color: #B00000;
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.cadastro-container .container p {
+    color: #444;
+    font-size: 0.97rem;
+    margin-bottom: 14px;
+}
+
+.cadastro-container .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 16px;
+}
+
+.cadastro-container .form-group > div {
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+}
+
+.cadastro-container label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #222;
+    font-size: 0.97rem;
+}
+
+.cadastro-container input[type="text"],
+.cadastro-container input[type="date"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    background: #fafbfc;
+    color: #111;
+    transition: border 0.2s;
+}
+
+.cadastro-container input[type="number"]#valor-mensal {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    background: #fafbfc;
+    color: #111;
+    transition: border 0.2s;
+}
+
+.cadastro-container select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    background: #fafbfc;
+    color: #111;
+    transition: border 0.2s;
+}
+
+.cadastro-container button[type="submit"] {
+    width: 100%;
+    background: #B00000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 0;
+    font-weight: 600;
+    font-size: 1.07rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 1px 6px rgba(176,0,0,0.07);
+    transition: background 0.2s;
+    margin-top: 18px;
+}
+
+.notificacao-cadastro {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    background: #1bbd36;
+    color: #fff;
+    padding: 18px 32px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    box-shadow: 0 2px 12px #0002;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    font-weight: bold;
+}
+
+.notificacao-cadastro.mostrar {
+    opacity: 1;
+    pointer-events: auto;
+}
+

@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=width=device-width, initial-scale=1.0">
+    <title>Enorfrota Adm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica;
+        }
+
+        body {
+            background: #f5f5f5;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container-main {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Barra lateral */
+        .barra-lateral {
+            width: 250px;
+            background: #B00000;
+            color: #fff;
+            height: 100vh;
+            padding: 10px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .barra-lateral h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .barra-lateral ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .barra-lateral ul li {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+
+        .barra-lateral ul li:hover,
+        .barra-lateral ul li.ativo {
+            background: #ffc9c925;
+        }
+
+        .barra-lateral ul li i {
+            font-size: 16px;
+        }
+
+        .informacoes-usuario {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: #8b0000;
+            padding: 15px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .avatar-usuario {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #5f515100;
+        }
+
+        .avatar-usuario img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .detalhes-usuario {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detalhes-usuario p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+
+        .detalhes-usuario p:nth-child(2) {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Botão de alternância modo escuro */
+        .botao-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 25px;
+            background: #B00000;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .botao-toggle.ativo {
+            background: #B00000;
+        }
+
+        .botao-toggle .circulo {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .botao-toggle.ativo .circulo {
+            transform: translateX(25px);
+        }
+
+        /* Botão menu mobile */
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #B00000;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1001;
+            display: none;
+        }
+
+        /* Botões com Hover Animado */
+        .content-area {
+            flex: 1;
+            margin-left: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: flex-start;
+            padding-top: 40px;
+        }
+
+        .button-group {
+            position: relative;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            width: 320px;
+            margin: 0 auto;
+            margin-top: 0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            background: none;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1;
+            transition: color 0.3s, background 0.3s;
+            border-radius: 0;
+            color: #5e3d3d;
+            font-weight: bold;
+        }
+
+        .btn.ativo {
+            color: #fff;
+            background: #c01c1c;
+        }
+
+        .btn:hover {
+            color: #b30d0d;
+        }
+
+        .btn:first-child {
+            border-radius: 20px 0 0 20px;
+        }
+
+        .btn:last-child {
+            border-radius: 0 20px 20px 0;
+        }
+
+        .hover-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(100% / 3);
+            height: 100%;
+            background-color: #c01c1c;
+            z-index: 0;
+            transition: left 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .container-cartoes {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+            padding: 32px 24px;
+            margin: 36px auto 0 auto;
+            width: auto;
+            max-width: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cartoes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            justify-items: center;
+            width: auto;
+            margin: 0 auto;
+            max-width: 1020px;
+        }
+
+        /* Responsivo para telas menores */
+        @media (max-width: 900px) {
+            .cartoes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cartoes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cartao-credito {
+            background: linear-gradient(135deg, #7b3089 60%, #6e22bf 100%);
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(176, 0, 0, 0.10);
+            color: #fff;
+            width: 270px;
+            height: 160px;
+            padding: 22px 22px 16px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            position: relative;
+            outline: none;
+        }
+
+        .cartao-credito:active,
+        .cartao-credito:focus,
+        .cartao-credito:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 6px 24px rgba(176, 0, 0, 0.18);
+            background: linear-gradient(135deg, #641681 70%, #800df3 100%);
+        }
+
+        .cartao-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cartao-chip {
+            width: 32px;
+            height: 22px;
+            background: #9c9c9c;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 1px 2px #bba94b55;
+        }
+
+        .cartao-bandeira {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #fff;
+            opacity: 0.85;
+        }
+
+        .cartao-numero {
+            font-size: 1.15rem;
+            letter-spacing: 2px;
+            margin: 18px 0 8px 0;
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+        }
+
+        .cartao-info {
+            font-size: 0.97rem;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .cartao-label {
+            font-weight: 600;
+            opacity: 0.85;
+        }
+
+        .cartao-veloe-go {
+            background: #3d1a7a;
+            border-radius: 18px;
+            width: 320px;
+            height: 190px;
+            color: #fff;
+            position: relative;
+            box-shadow: 0 4px 24px rgba(61, 26, 122, 0.18);
+            padding: 24px 28px 18px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            border: none;
+        }
+
+        .cartao-veloe-go .bg-go {
+            position: absolute;
+            right: -20px;
+            bottom: -10px;
+            font-size: 7.5rem;
+            color: #5a2bb3;
+            font-weight: bold;
+            opacity: 0.35;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+
+        .cartao-veloe-go .logo-veloe {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.35rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .cartao-veloe-go .chip {
+            width: 38px;
+            height: 26px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px #bba94b55;
+            z-index: 1;
+            position: relative;
+        }
+
+        .cartao-veloe-go .numero {
+            font-size: 1.18rem;
+            letter-spacing: 2.5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 8px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .cartao-veloe-go .info {
+            font-size: 0.97rem;
+            z-index: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            align-items: flex-start; /* Alinha à esquerda */
+            text-align: left;        /* Garante alinhamento à esquerda */
+        }
+
+        .cartao-veloe-go .validade {
+            position: absolute;
+            right: 28px;
+            bottom: 22px;
+            font-size: 0.93rem;
+            opacity: 0.92;
+            z-index: 1;
+            text-align: right;
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .barra-lateral {
+                width: 200px;
+            }
+
+            .content-area {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container-main {
+                flex-direction: column;
+            }
+
+            .barra-lateral {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                left: -100%;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+            }
+
+            .barra-lateral.mostrar {
+                left: 0;
+            }
+
+            .content-area {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Modo escuro */
+        body.modo-escuro {
+            background-color: #ffffff;
+        }
+
+        body.modo-escuro .barra-lateral {
+            background: #B00000;
+        }
+
+        body.modo-escuro .button-group {
+            background: #222;
+        }
+
+        body.modo-escuro .btn {
+            color: #fff;
+        }
+
+        /* Modo escuro para conteúdo e modal, exceto barra lateral e cartão */
+        body.modo-escuro .content-area {
+            background: #18191a !important; /* fundo mais escuro */
+            color: #fff !important;
+        }
+        body.modo-escuro .container-cartoes,
+        body.modo-escuro .cartoes-grid {
+            background: #232526 !important; /* cinza escuro */
+            color: #fff !important;
+        }
+        body.modo-escuro .modal-conteudo,
+        body.modo-escuro .cadastro-container {
+            background: #232526 !important;
+            color: #fff !important;
+        }
+        body.modo-escuro .modal-receber-cartao {
+            background: rgba(24, 25, 26, 0.92) !important;
+        }
+        body.modo-escuro label,
+        body.modo-escuro h2,
+        body.modo-escuro h3,
+        body.modo-escuro p,
+        body.modo-escuro span,
+        body.modo-escuro select,
+        body.modo-escuro input,
+        body.modo-escuro textarea {
+            color: #fff !important;
+        }
+        body.modo-escuro input,
+        body.modo-escuro select,
+        body.modo-escuro textarea {
+            background: #232526 !important;
+            border: 1px solid #444 !important;
+        }
+        body.modo-escuro input::placeholder {
+            color: #aaa !important;
+        }
+        body.modo-escuro button,
+        body.modo-escuro .btn {
+            background: #B00000 !important;
+            color: #fff !important;
+        }
+        body.modo-escuro .btn.ativo {
+            background: #800000 !important;
+            color: #fff !important;
+        }
+        body.modo-escuro .hover-indicator {
+            background: #800000 !important;
+        }
+        body.modo-escuro .cadastro-container {
+            background: #232526 !important;
+            color: #fff !important;
+        }
+        /* NÃO altere o cartão no modo escuro */
+        body.modo-escuro .cartao-veloe-go {
+            background: #3d1a7a !important;
+            color: #fff !important;
+            box-shadow: 0 4px 24px rgba(61, 26, 122, 0.18);
+        }
+        body.modo-escuro .cartao-veloe-go .bg-go {
+            color: #5a2bb3 !important;
+        }
+        body.modo-escuro .cartao-veloe-go .chip {
+            background: #e0e0e0 !important;
+        }
+        body.modo-escuro .cartao-veloe-go .logo-veloe,
+        body.modo-escuro .cartao-veloe-go .numero,
+        body.modo-escuro .cartao-veloe-go .info,
+        body.modo-escuro .cartao-veloe-go .validade {
+            color: #fff !important;
+        }
+        body.modo-escuro .modal-conteudo h2 {
+            color: #ffffff !important;
+        }
+
+        .cadastro-container {
+            margin-top: 32px;
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            padding: 32px;
+        }
+
+        .cadastro-container h2 {
+            color: #B00000;
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            letter-spacing: 0.2px;
+        }
+
+        .cadastro-container .container {
+            margin-bottom: 18px;
+        }
+
+        .cadastro-container .container h3 {
+            color: #B00000;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .cadastro-container .container p {
+            color: #444;
+            font-size: 0.97rem;
+            margin-bottom: 14px;
+        }
+
+        .cadastro-container .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px 16px;
+        }
+
+        .cadastro-container .form-group > div {
+            flex: 1 1 45%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cadastro-container label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #222;
+            font-size: 0.97rem;
+        }
+
+        .cadastro-container input[type="text"],
+        .cadastro-container input[type="date"] {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            outline: none;
+            background: #fafbfc;
+            color: #111;
+            transition: border 0.2s;
+        }
+
+        .cadastro-container input[type="number"]#valor-mensal {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            outline: none;
+            background: #fafbfc;
+            color: #111;
+            transition: border 0.2s;
+        }
+
+        .cadastro-container button[type="submit"] {
+            width: 100%;
+            background: #B00000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 0;
+            font-weight: 600;
+            font-size: 1.07rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 1px 6px rgba(176, 0, 0, 0.07);
+            transition: background 0.2s;
+            margin-top: 18px;
+        }
+
+        .modal-receber-cartao {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-conteudo {
+            background: #fff;
+            border-radius: 18px;
+            padding: 36px 32px 32px 32px;
+            min-width: 340px;
+            min-height: 220px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-fechar {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 2rem;
+            color: #B00000;
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .modal-fechar:hover {
+            color: #800000;
+        }
+
+        .modal-flex {
+            display: flex;
+            align-items: center; /* Alinha verticalmente ao centro */
+            justify-content: center;
+            gap: 32px;
+        }
+
+        @media (max-width: 700px) {
+            .modal-flex {
+                flex-direction: column;
+                align-items: center;
+                gap: 18px;
+            }
+            #form-complementar {
+                margin-left: 0 !important;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="menu-toggle" onclick="alternarMenu()">☰ Menu</button>
+    <div class="botao-toggle" id="botaoToggle" onclick="alternarModoEscuro()">
+        <div class="circulo"></div>
+    </div>
+    <div class="container-main">
+     <!-- Barra lateral -->
+    <div class="barra-lateral" id="barra-lateral">
+        <h2>EnorFrota</h2>
+        <ul>
+            <li class="ativo">
+                <a href="{{ url_for('index')}}">
+                <i class="fas fa-home"></i> Início
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('relatorios')}}">
+                <i class="fas fa-file-alt"></i> Relatórios
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('veiculos')}}">
+                <i class="fas fa-car"></i> Veículos
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('abastecimento')}}">
+                <i class="fas fa-gas-pump"></i> Abastecimento
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('usuarios_principal')}}">
+                <i class="fas fa-users"></i> Usuários
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('centrocusto')}}">
+                <i class="fas fa-dollar-sign"></i> Centro de Custo
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('base')}}">
+                <i class="fas fa-building"></i> Base
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('cartaocombustivel')}}">
+                <i class="fas fa-credit-card"></i> Cartão
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('logout')}}">
+                <i class="fas fa-sign-in-alt"></i> Sair
+                </a>
+            </li>
+            <!-- Exemplo de botão/aba modo escuro na barra lateral -->
+            <li class="modo-escuro-aba" onclick="alternarModoEscuro()">
+                <i class="fas fa-moon"></i>
+                <span>Modo Escuro</span>
+            </li>
+        </ul>
+
+        <div class="informacoes-usuario">
+            <div class="avatar-usuario">
+                <img src="img/avatar.jpg" alt="Foto do Usuário">
+            </div>
+            <div class="detalhes-usuario">
+                <p>{{session.user_name}}</p>
+                <p>Perfil: {{session.acesso}}</p>
+            </div>
+        </div>
+    </div>
+        <!-- Conteúdo principal -->
+        <div class="content-area">
+            <div class="button-group">
+                <div class="hover-indicator" style="left:calc(1 * 100% / 3);"></div>
+                <a href="{{url_for('cartaocombustivel')}}" class="btn" data-index="0" style="text-decoration:none;display:inline-block;text-align:center;">Cadastro</a>
+                <button class="btn ativo" data-index="1">Recebimento</button>
+                <a href="{{ url_for('listacartoes') }}" class="btn" data-index="2">Lista</a>
+                <!--<button class="btn" data-index="2" onclick="window.location.href='lista_cartoes.html'">Lista</button>-->
+            </div>
+            <div class="container-cartoes">
+                <h2 style="color:#000; font-size:1.18rem; font-weight:600; text-align:center; margin-bottom:24px;">Selecione um Cartão</h2>
+                <div class="cartoes-grid" id="cartoesGrid"></div>
+            </div>
+        </div>
+    </div>
+    <div id="modalReceberCartao" class="modal-receber-cartao" style="display:none;">
+        <div class="modal-conteudo">
+            <span class="modal-fechar" id="fecharModal">&times;</span>
+            <h2 style="text-align:center; color:#000; margin-bottom:24px;">Receber Cartão</h2>
+            <div id="notificacaoRecebido" style="display:none; background:#28a745; color:#fff; padding:10px 18px; border-radius:8px; margin-bottom:16px; font-weight:600; text-align:center;">
+                Recebimento do cartão concluído!
+            </div>
+            <div class="modal-flex">
+                <div>
+                    <div id="cartaoModalContainer"></div>
+                    <div id="info-cartao-detalhes" style="
+                        background: #fffbe6;
+                        border-radius: 10px;
+                        padding: 16px 20px;
+                        margin: 18px 0 0 0;
+                        box-shadow: 0 1px 8px #ffe06655;
+                        border: 1.5px solid #ffe066;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 7px;
+                    ">
+                        <div style="font-weight:700;color:#b38a00;font-size:1.04rem;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right:7px;color:#b38a00;"></i>
+                            Base: <span id="info-base-modal"></span>
+                        </div>
+                        <div style="font-weight:700;color:#b38a00;font-size:1.04rem;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right:7px;color:#b38a00;"></i>
+                            Centro de Custo: <span id="info-cc-modal"></span>
+                        </div>
+                        <div style="font-weight:700;color:#b38a00;font-size:1.04rem;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right:7px;color:#b38a00;"></i>
+                            Valor Mensal: <span id="info-vm-modal"></span>
+                        </div>
+                    </div>
+                </div>
+                <form id="form-complementar" style="display:flex;flex-direction:column;gap:14px;min-width:220px;max-width:260px;margin-left:32px;">
+                    <label for="numero-cartao-modal" style="font-weight:600;">Número do Cartão</label>
+                    <input type="text" id="numero-cartao-modal" maxlength="19" inputmode="numeric" placeholder="Digite o número do cartão" style="padding:10px;border-radius:8px;border:1px solid #ccc;">
+
+                    <label for="senha-cartao-modal" style="font-weight:600;">Senha</label>
+                    <input type="password" id="senha-cartao-modal" maxlength="4" inputmode="numeric" placeholder="Digite a senha" style="padding:10px;border-radius:8px;border:1px solid #ccc;">
+
+                    <label for="status-cartao-modal" style="font-weight:600;">Status</label>
+                    <select id="status-cartao-modal" style="padding:10px;border-radius:8px;border:1px solid #ccc;">
+                        <option value="">Selecione</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="bloqueado">Bloqueado</option>
+                        <option value="perdido">Perdido</option>
+                    </select>
+                    <button type="submit" style="margin-top:10px;background:#B00000;color:#fff;border:none;border-radius:8px;padding:12px;font-weight:600;cursor:pointer;">Salvar Dados</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="notificacaoRecebidoGlobal" style="display:none; position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:#28a745; color:#fff; padding:14px 28px; border-radius:10px; font-weight:600; font-size:1.08rem; z-index:99999; box-shadow:0 2px 12px rgba(0,0,0,0.13);">
+        Recebimento do cartão concluído!
+    </div>
+    <script>
+        // Verifica o estado do modo escuro ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const modoEscuroAtivo = localStorage.getItem('modoEscuro') === 'true';
+            if (modoEscuroAtivo) {
+                document.body.classList.add('modo-escuro');
+                const botaoAlternar = document.getElementById('botaoToggle');
+                if (botaoAlternar) {
+                    botaoAlternar.classList.add('ativo');
+                }
+            }
+        });
+
+        // Alterna o modo escuro e salva o estado no localStorage
+        function alternarModoEscuro() {
+            const botaoAlternar = document.getElementById('botaoToggle');
+            const modoEscuroAtivo = document.body.classList.toggle('modo-escuro');
+            if (botaoAlternar) {
+                botaoAlternar.classList.toggle('ativo');
+            }
+            localStorage.setItem('modoEscuro', modoEscuroAtivo);
+        }
+
+        function alternarMenu() {
+            document.getElementById('barra-lateral').classList.toggle('mostrar');
+        }
+
+        const botoes = document.querySelectorAll(".btn");
+        const indicador = document.querySelector(".hover-indicator");
+
+        botoes.forEach(botao => {
+            botao.addEventListener("click", () => {
+                const indice = botao.dataset.index;
+                indicador.style.transition = "left 0.5s cubic-bezier(.4,1.5,.5,1)";
+                indicador.style.left = `calc(${indice} * 100% / 3)`;
+
+                botoes.forEach(b => b.classList.remove("ativo"));
+                botao.classList.add("ativo");
+            });
+        });
+
+        const inputValorMensal = document.getElementById('valor-mensal');
+        if (inputValorMensal) {
+            inputValorMensal.addEventListener('input', function (e) {
+                let valor = e.target.value.replace(/\D/g, '');
+                valor = (valor / 100).toFixed(2) + '';
+                valor = valor.replace('.', ',');
+                valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+                e.target.value = 'R$ ' + valor;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Renderização dos cartões
+            const cartoes = JSON.parse(localStorage.getItem('cartoes') || '[]');
+            const gradeCartoes = document.getElementById('cartoesGrid');
+            gradeCartoes.innerHTML = '';
+
+            if (cartoes.length === 0) {
+                gradeCartoes.innerHTML = '<p style="color:#888;text-align:center;width:100%;">Nenhum cartão cadastrado.</p>';
+            } else {
+                cartoes.forEach((cartao, indice) => {
+                    const botaoCartao = document.createElement('button');
+                    botaoCartao.className = 'cartao-veloe-go';
+                    botaoCartao.style.cursor = 'pointer';
+                    botaoCartao.innerHTML = `
+                        <div class="logo-veloe">veloe go</div>
+                        <div class="chip"></div>
+                        <div class="numero">**** **** **** ****</div>
+                        <div class="info">
+                            <span>${cartao.base || 'NOME DA BASE'}</span>
+                            <span>${cartao.placa || 'NOME DA PLACA'}</span>
+                        </div>
+                        <div class="validade">12/37</div>
+                        <div class="bg-go">go</div>
+                    `;
+                    botaoCartao.addEventListener('click', function() {
+                        abrirModalReceberCartao(cartao);
+                    });
+                    gradeCartoes.appendChild(botaoCartao);
+                });
+            }
+
+            // Modal lógica
+            function abrirModalReceberCartao(cartao) {
+                const modal = document.getElementById('modalReceberCartao');
+                const containerCartao = document.getElementById('cartaoModalContainer');
+                containerCartao.innerHTML = `
+                    <div class="cartao-veloe-go" style="margin-top: 0;">
+                        <div class="logo-veloe">veloe go</div>
+                        <div class="chip"></div>
+                        <div class="numero" id="numeroCartaoVisual">${cartao.numero ? cartao.numero : '**** **** **** ****'}</div>
+                        <div class="info">
+                            <span>${cartao.base || 'NOME DA BASE'}</span>
+                            <span>${cartao.placa || 'NOME DA PLACA'}</span>
+                        </div>
+                        <div class="validade">12/37</div>
+                        <div class="bg-go">go</div>
+                    </div>
+                `;
+
+                document.getElementById('info-base-modal').textContent = cartao.base || '';
+                document.getElementById('info-cc-modal').textContent = cartao.centroCusto || '';
+                document.getElementById('info-vm-modal').textContent = cartao.valorMensal || '';
+
+                // Preencher campos se já existirem dados
+                document.getElementById('numero-cartao-modal').value = cartao.numero || '';
+                document.getElementById('senha-cartao-modal').value = cartao.senha || '';
+                document.getElementById('status-cartao-modal').value = cartao.status || '';
+
+                modal.style.display = 'flex';
+
+                // Atualizar número do cartão visual em tempo real
+                document.getElementById('numero-cartao-modal').addEventListener('input', function(e) {
+                    let valor = e.target.value.replace(/\D/g, '').slice(0, 16);
+                    let formatado = valor.replace(/(.{4})/g, '$1 ').trim();
+                    e.target.value = formatado;
+                    document.getElementById('numeroCartaoVisual').textContent = formatado || '**** **** **** ****';
+                });
+
+                // Limitar senha a 4 dígitos
+                document.getElementById('senha-cartao-modal').addEventListener('input', function(e) {
+                    let valor = e.target.value.replace(/\D/g, '').slice(0, 4);
+                    e.target.value = valor;
+                });
+
+                // Salvar dados complementares
+                document.getElementById('form-complementar').onsubmit = function(e) {
+                    e.preventDefault();
+                    cartao.numero = document.getElementById('numero-cartao-modal').value;
+                    cartao.senha = document.getElementById('senha-cartao-modal').value;
+                    cartao.status = document.getElementById('status-cartao-modal').value;
+
+                    // Atualiza no localStorage (cartões gerais)
+                    let cartoes = JSON.parse(localStorage.getItem('cartoes') || '[]');
+                    const indice = cartoes.findIndex(c => c.placa === cartao.placa && c.base === cartao.base);
+                    if (indice !== -1) {
+                        // Remove o cartão recebido da lista de cartões gerais
+                        const cartaoRemovido = cartoes.splice(indice, 1)[0];
+                        localStorage.setItem('cartoes', JSON.stringify(cartoes));
+
+                        // Adiciona o cartão recebido à lista de cartões recebidos, com todos os dados
+                        let cartoesRecebidos = JSON.parse(localStorage.getItem('cartoesRecebidos')) || [];
+                        cartoesRecebidos.push({
+                            placa: cartaoRemovido.placa,
+                            numero: cartao.numero,
+                            base: cartaoRemovido.base,
+                            senha: cartao.senha,
+                            status: cartao.status,
+                            dataRecebimento: new Date().toLocaleString('pt-BR')
+                        });
+                        localStorage.setItem('cartoesRecebidos', JSON.stringify(cartoesRecebidos));
+
+                        // Atualiza a grade de cartões na tela (remove o cartão recebido)
+                        const gradeCartoes = document.getElementById('cartoesGrid');
+                        if (gradeCartoes) {
+                            // Remove todos e re-renderiza
+                            gradeCartoes.innerHTML = '';
+                            if (cartoes.length === 0) {
+                                gradeCartoes.innerHTML = '<p style="color:#888;text-align:center;width:100%;">Nenhum cartão cadastrado.</p>';
+                            } else {
+                                cartoes.forEach((c, i) => {
+                                    const botaoCartao = document.createElement('button');
+                                    botaoCartao.className = 'cartao-veloe-go';
+                                    botaoCartao.style.cursor = 'pointer';
+                                    botaoCartao.innerHTML = `
+                                        <div class="logo-veloe">veloe go</div>
+                                        <div class="chip"></div>
+                                        <div class="numero">**** **** **** ****</div>
+                                        <div class="info">
+                                            <span>${c.base || 'NOME DA BASE'}</span>
+                                            <span>${c.placa || 'NOME DA PLACA'}</span>
+                                        </div>
+                                        <div class="validade">12/37</div>
+                                        <div class="bg-go">go</div>
+                                    `;
+                                    botaoCartao.addEventListener('click', function() {
+                                        abrirModalReceberCartao(c);
+                                    });
+                                    gradeCartoes.appendChild(botaoCartao);
+                                });
+                            }
+                        }
+
+                        // Exibe notificação global fora do modal
+                        const notificacaoGlobal = document.getElementById('notificacaoRecebidoGlobal');
+                        notificacaoGlobal.style.display = 'block';
+                        document.getElementById('modalReceberCartao').style.display = 'none';
+                        setTimeout(() => {
+                            notificacaoGlobal.style.display = 'none';
+                        }, 3000);
+                    }
+                };
+            }
+
+            document.getElementById('fecharModal').onclick = function() {
+                document.getElementById('modalReceberCartao').style.display = 'none';
+            };
+
+            window.onclick = function(evento) {
+                const modal = document.getElementById('modalReceberCartao');
+                if (evento.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+
+        });
+    </script>
+</body>
+
+</html>

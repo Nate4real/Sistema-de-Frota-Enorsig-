@@ -1,0 +1,558 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica;
+}
+
+body {
+    display: flex;
+    background: #f8f8f8; /* Fundo branco */
+    transition: 0.3s ease;
+    height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
+}
+
+/* Modo Dark */
+body.dark-mode {
+    background-color: #121212; /* Fundo escuro */
+    color: #ffffff; /* Letras brancas */
+}
+
+body.dark-mode,
+body.dark-mode * {
+    color: #fff !important;
+}
+
+body.dark-mode .modal-conteudo {
+    background-color: #333; /* Fundo escuro do modal */
+    color: #ffffff; /* Letras brancas */
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+    background-color: #444; /* Fundo escuro dos campos */
+    color: #ffffff; /* Letras brancas */
+    border: 1px solid #555; /* Borda escura */
+}
+
+body.dark-mode .tabela-centros {
+    background-color: #232323;
+    color: #fff;
+}
+
+body.dark-mode .tabela-centros th {
+    background-color: #B00000 !important; /* Mantém vermelho no dark */
+    color: #fff !important;
+}
+
+body.dark-mode .tabela-centros td {
+    background-color: #232323;
+    color: #fff;
+    border-bottom: 1px solid #444;
+}
+
+body.dark-mode .tabela-centros tr:nth-child(even) {
+    background-color: #282828;
+}
+
+body.dark-mode .tabela-centros tr:hover {
+    background-color: #333;
+}
+
+body.dark-mode .status.ativo {
+    background-color: #233b2a;
+    color: #6cffb2;
+}
+
+body.dark-mode .status.inativo {
+    background-color: #3a2323;
+    color: #ff6f6f;
+}
+
+body.dark-mode .cadastro-container,
+body.dark-mode .cadastrados-container {
+    background-color: #333; /* Fundo escuro dos containers */
+    color: #ffffff; /* Letras brancas */
+    border: 1px solid #444; /* Borda escura */
+}
+
+body.dark-mode .btn {
+    background-color: #444; /* Fundo escuro dos botões */
+    color: #ffffff; /* Letras brancas */
+}
+
+body.dark-mode .btn:hover {
+    background-color: #555; /* Fundo mais claro ao passar o mouse */
+}
+
+body.dark-mode .btn.limpar {
+    background: linear-gradient(90deg, #434343 0%, #262626 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+    border-radius: 8px;
+}
+
+body.dark-mode .btn.limpar:hover {
+    background: linear-gradient(90deg, #555 0%, #333 100%);
+    color: #ffb3b3;
+    transform: translateY(-2px) scale(1.04);
+}
+
+body.dark-mode .btn.salvar {
+    background: linear-gradient(90deg, #d10000 0%, #b00000 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(209,0,0,0.18);
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+    border-radius: 8px;
+}
+
+body.dark-mode .btn.salvar:hover {
+    background: linear-gradient(90deg, #ff3333 0%, #b00000 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* Modo Dark para o .container */
+body.dark-mode .container {
+    background-color: #121212; /* Fundo escuro */
+    color: #ffffff; /* Letras brancas */
+    border: 1px solid #333; /* Borda escura */
+}
+
+/* Barra lateral */
+.barra-lateral {
+    width: 250px;
+    background: #B00000;
+    color: #fff;
+    height: 100vh;
+    padding: 10px;
+    position: fixed;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.barra-lateral h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.barra-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.barra-lateral ul li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 10px;
+}
+
+.barra-lateral ul li:hover,
+.ativo {
+    background: #ffc9c925;
+}
+
+.barra-lateral ul li i {
+    font-size: 16px;
+}
+
+.informacoes-usuario {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #8b0000;
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.avatar-usuario img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Conteúdo principal */
+.conteudo {
+    margin-left: 270px;
+    padding: 20px;
+    width: calc(100% - 270px); /* Ajusta a largura para ocupar o restante da tela */
+    height: 100%; /* Ocupa toda a altura disponível */
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo ultrapassar a altura */
+    transition: all 0.3s;
+}
+
+/* Ajuste para os containers */
+.container {
+    max-width: 100%; /* Permite que o contêiner ocupe toda a largura disponível */
+    margin: 0 auto; /* Centraliza o contêiner horizontalmente */
+    background: #f8f8f8; /* Fundo cinza claro */
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os containers */
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+}
+
+.cadastro-container,
+.cadastrados-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffffff; /* Fundo branco */
+    flex-grow: 1; /* Faz com que os contêineres cresçam para ocupar o espaço disponível */
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+}
+
+.cadastro-container {
+    margin-bottom: 0; /* Remove margem extra */
+}
+
+.cadastrados-container {
+    margin-top: 0; /* Remove margem extra */
+}
+
+.cadastro-container h1,
+.cadastrados-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Ajuste do tamanho dos títulos */
+.cadastro-container h1,
+.cadastrados-container h2 {
+    font-size: 1.5rem; /* Diminui o tamanho do título */
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-cadastro {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group textarea {
+    resize: none;
+    height: 80px;
+}
+
+.form-actions {
+    grid-column: span 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn.limpar {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn.salvar {
+    background-color: #b21313;
+    color: #fff;
+}
+
+/* Estilos da tabela */
+.tabela-centros {
+    margin: 0 auto;
+    border-radius: 0 0 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    min-width: 900px; /* Garante largura para todos os campos */
+    max-width: 100%;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+}
+
+.tabela-centros th:first-child {
+    border-top-left-radius: 12px !important;
+}
+.tabela-centros th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+.tabela-centros th {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background: #B00000 !important;
+    color: #fff !important;
+    font-weight: 700;
+    border-bottom: 2px solid #b00000;
+    border-right: 1px solid #b00000;
+    text-transform: none !important;
+    letter-spacing: 0.5px;
+    padding: 6px 10px !important;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.tabela-centros td {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+    white-space: nowrap;
+}
+
+.tabela-centros td:last-child {
+    border-right: none;
+}
+.tabela-centros th:last-child {
+    border-right: none;
+}
+
+.tabela-centros tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-centros tr:hover {
+    background: #f7f7f7;
+}
+
+/* Centraliza a tabela no container */
+.tabela-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.status.ativo {
+    color: #28a745; /* Verde para status ativo */
+    font-weight: bold;
+}
+
+.tr-inativo {
+    background-color: #ffcccc; /* Vermelho claro */
+}
+
+/* Estilo para o status "Ativo" */
+.status.ativo {
+    background-color: #e6f4ea; /* Fundo verde claro */
+    color: #28a745; /* Texto verde */
+    font-weight: bold;
+    padding: 5px 10px; /* Espaçamento interno */
+    border-radius: 15px; /* Borda arredondada */
+    display: inline-block; /* Garante que o elemento seja inline */
+    text-align: center;
+}
+
+/* Estilo para o status "Inativo" */
+.status.inativo {
+    background-color: #fdecea; /* Fundo vermelho claro */
+    color: #dc3545; /* Texto vermelho */
+    font-weight: bold;
+    padding: 5px 10px; /* Espaçamento interno */
+    border-radius: 15px; /* Borda arredondada */
+    display: inline-block; /* Garante que o elemento seja inline */
+    text-align: center;
+}
+
+.btn.editar {
+    background-color: transparent; /* Sem fundo */
+    color: #007bff; /* Azul */
+    border: none; /* Sem borda */
+    cursor: pointer;
+    font-size: 18px; /* Tamanho do ícone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.btn.editar:hover {
+    color: #0056b3; /* Azul mais escuro ao passar o mouse */
+    transform: scale(1.1); /* Aumenta levemente o botão */
+}
+
+.btn.editar i {
+    font-size: 16px; /* Reduz o tamanho do ícone */
+}
+
+.btn.excluir {
+    background-color: #dc3545; /* Vermelho */
+    color: #fff;
+}
+
+.btn.excluir:hover {
+    background-color: #c82333; /* Vermelho escuro */
+}
+
+/* Modal (fundo escuro translúcido) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* Conteúdo do Modal */
+.modal-conteudo {
+    background-color: #fff;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botão de fechar */
+.fechar {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.fechar:hover {
+    color: #000;
+}
+
+/* Título */
+.modal-conteudo h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.2rem;
+}
+
+/* Formulário dentro do modal */
+#form-edicao .form-group {
+    margin-bottom: 1rem;
+}
+
+#form-edicao label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    color: #444;
+}
+
+#form-edicao input,
+#form-edicao select,
+#form-edicao textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+    background-color: #fdfdfd;
+}
+
+#form-edicao input:focus,
+#form-edicao select:focus,
+#form-edicao textarea:focus {
+    border-color: #d10000;
+    outline: none;
+}
+
+/* Botões */
+.form-actions {
+    text-align: right;
+    margin-top: 1.5rem;
+}
+
+.btn.salvar {
+    background-color: #d10000;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn.salvar:hover {
+    background-color: #a80000;
+}
+
+/* Botão de Modo Dark */
+.modo-dark-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.modo-dark-btn.dark {
+    background-color: #333;
+    color: #fff;
+}

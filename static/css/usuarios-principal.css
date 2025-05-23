@@ -1,0 +1,1244 @@
+/* Estilos globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica;
+}
+
+/* Ajuste para o layout principal */
+body {
+    display: flex;
+    flex-direction: row;
+    background: #f8f8f8;
+    transition: 0.3s ease;
+}
+
+/* Barra lateral */
+.barra-lateral {
+    width: 250px;
+    background: #B00000;
+    color: #fff;
+    height: 100vh;
+    padding: 10px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.barra-lateral h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.barra-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.barra-lateral ul li {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 10px;
+}
+
+.barra-lateral ul li:hover,
+.ativo {
+    background: #ffc9c925;
+}
+
+.barra-lateral ul li i {
+    font-size: 16px;
+}
+
+/* Conteúdo principal */
+.conteudo {
+    margin-left: 270px; /* Espaço para a barra lateral */
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    width: calc(100% - 270px); /* Ocupa o restante da largura */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os containers */
+}
+
+.conteudo h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Filtros */
+.filtros-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.filtros-header h2 {
+    font-size: 20px;
+    color: #333;
+}
+
+.botoes-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-massivo,
+.btn-criar {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-massivo {
+    background-color: #6c757d; /* Cinza */
+    border-radius: 10px;
+    color: #fff;
+}
+
+.btn-massivo:hover {
+    background-color: #a1a1a1d6; /* Cinza escuro */
+}
+
+.btn-criar {
+    background-color: #b81111; /* Azul */
+    border-radius: 10px;
+    color: #fff;
+}
+
+.btn-criar:hover {
+    background-color: #750000; /* Azul escuro */
+}
+
+.btn-limpar {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #646664;
+    border: none;
+    border-radius: 15px;
+    box-shadow: none;
+    margin-left: 8px;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-limpar:hover {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.filtros-container p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.filtros-form {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    align-items: end;
+}
+
+.filtro {
+    display: flex;
+    flex-direction: column;
+}
+
+.filtro label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.filtro input,
+.filtro select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.filtro-acoes {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.btn-filtrar {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #646664;
+    border: none;
+    border-radius: 15px;
+    /* Remova a sombra */
+    box-shadow: none;
+}
+
+.btn-filtrar:hover {
+    background-color: #00bb06;
+}
+
+.btn:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+/* Tabela minimalista e bonita */
+.tabela-usuarios {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    background: transparent;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.04);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.tabela-usuarios th,
+.tabela-usuarios td {
+    padding: 14px 10px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
+    font-size: 13px;
+    vertical-align: middle;
+    background: none;
+    transition: background 0.2s;
+}
+
+.tabela-usuarios th {
+    background: #B00000;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #b00000;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.tabela-usuarios th.cpf {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.tabela-usuarios th:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.tabela-usuarios tr {
+    transition: background 0.2s;
+}
+
+.tabela-usuarios tr:hover {
+    background: #f5f5f5;
+}
+
+.tabela-usuarios td {
+    color: #333;
+    background: #fff;
+    border-bottom: 1px solid #ececec;
+}
+
+.tabela-usuarios tr:last-child td {
+    border-bottom: none;
+}
+
+/* Minimalista para ações */
+.tabela-usuarios td.acoes {
+    white-space: nowrap;
+    background: none;
+    border: none;
+}
+
+/* Status pill minimalista */
+.status {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    background: #f5f5f5;
+    color: #B00000;
+    letter-spacing: 0.5px;
+}
+
+.status.ativo {
+    background: #eafaf1;
+    color: #28a745;
+}
+
+.status.inativo {
+    background: #fdeaea;
+    color: #F44336;
+}
+
+.status.ferias {
+    background: #fff8e1;
+    color: #ffc107;
+}
+
+/* ====== TABELA UNIVERSAL CUSTOMIZADA ====== */
+.tabela-custom {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+.tabela-custom th, .tabela-custom td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 0.95rem;
+}
+.tabela-custom th {
+    background-color: #e63946;
+    color: #fff;
+    font-weight: bold;
+}
+.tabela-custom tr:last-child td {
+    border-bottom: none;
+}
+
+/* Botão de ação na tabela custom */
+.tabela-custom td button,
+.tabela-custom td button:hover {
+    background: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* Status styles universais */
+.status-ativo {
+    color: #198754;
+    background: #e6f4ea;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 16px;
+    display: inline-block;
+}
+.status-inativo {
+    color: #e63946;
+    background: #fdeaea;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 16px;
+    display: inline-block;
+}
+.status-manutencao {
+    color: #856404;
+    background: #fff3cd;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 16px;
+    display: inline-block;
+}
+
+/* Responsividade para tabela custom */
+@media (max-width: 700px) {
+    .tabela-custom th, .tabela-custom td {
+        font-size: 0.85rem;
+        padding: 7px 4px;
+    }
+}
+
+/* ====== MODO ESCURO UNIVERSAL PARA TABELA CUSTOM ====== */
+body.modo-escuro .tabela-custom {
+    background-color: #232323;
+    color: #fff;
+}
+body.modo-escuro .tabela-custom th {
+    background-color: #e63946 !important;
+    color: #fff !important;
+}
+body.modo-escuro .tabela-custom td {
+    background-color: #232323;
+    color: #fff;
+    border-bottom: 1px solid #444;
+}
+body.modo-escuro .tabela-custom tr:last-child td {
+    border-bottom: none;
+}
+body.modo-escuro .status-ativo {
+    background: #233b2a;
+    color: #6cffb2;
+}
+body.modo-escuro .status-inativo {
+    background: #3a2323;
+    color: #ff6c6c;
+}
+body.modo-escuro .status-manutencao {
+    background: #3a3623;
+    color: #ffe066;
+}
+
+/* Apenas o topo das colunas arredondado */
+.tabela-custom th:first-child,
+.tabela-usuarios th:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 0;
+}
+
+.tabela-custom th:last-child,
+.tabela-usuarios th:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 0;
+}
+
+/* Remove qualquer arredondamento na parte de baixo */
+.tabela-custom th,
+.tabela-usuarios th {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    text-transform: capitalize !important;
+    /* Remove uppercase se houver */
+}
+
+/* Modo Dark minimalista */
+body.dark-mode .tabela-container {
+    background: #181818;
+    border: 1px solid #232323;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+}
+
+body.dark-mode .tabela-usuarios th {
+    background: #B00000 !important;
+    color: #fff !important;
+    border-bottom: 2px solid #b00000 !important;
+}
+
+body.dark-mode .tabela-usuarios td {
+    background: #232323;
+    color: #eee;
+    border-bottom: 1px solid #222;
+}
+
+body.dark-mode .tabela-usuarios tr:hover {
+    background: #292929;
+}
+
+body.dark-mode .status {
+    background: #232323;
+    color: #B00000;
+}
+
+body.dark-mode .status.ativo {
+    background: #233b2a;
+    color: #6cffb2;
+}
+
+body.dark-mode .status.inativo {
+    background: #3a2323;
+    color: #ff6f6f;
+}
+
+body.dark-mode .status.ferias {
+    background: #3a3623;
+    color: #ffe066;
+}
+
+/* Remove borda dupla nos cantos arredondados */
+.tabela-usuarios th.cpf,
+.tabela-usuarios th:last-child {
+    border-bottom: 2px solid #b00000;
+}
+
+/* Remove sombra e borda extra em dark */
+body.dark-mode .tabela-usuarios {
+    box-shadow: none;
+    border-radius: 14px;
+}
+
+.acoes {
+    display: flex;
+    gap: 5px;
+}
+
+.btn {
+    padding: 5px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+}
+
+.btn.inativar {
+    background-color: transparent;
+    color: #B00000; /* Vermelho */
+}
+
+.btn.editar {
+    background-color: transparent;
+    color: #6c63ff; /* Roxo */
+}
+
+.btn.inativar:hover {
+    background-color: #ffe5e5; /* Fundo leve ao passar o mouse */
+}
+
+.btn.editar:hover {
+    background-color: #e5e5ff; /* Fundo leve ao passar o mouse */
+}
+
+.btn i {
+    font-size: 14px;
+}
+
+/* Estilos para o modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 5px 9px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    max-height: 90%;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #501111;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.modal-header .close {
+    cursor: pointer;
+    font-size: 18px;
+    color: #333;
+}
+
+.modal-body h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.modal-body p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group div {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-salvar {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-salvar:hover {
+    background-color: #218838;
+}
+
+.btn-cancelar {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-cancelar:hover {
+    background-color: #c82333;
+}
+
+.container {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.container h3 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.container p {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Estilo para o campo de seleção múltipla */
+select[multiple] {
+    height: auto;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    background-color: #fff;
+}
+
+/* Estilo para o container de Permissão */
+.custom-select select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    appearance: none; /* Remove o estilo padrão do select */
+    cursor: pointer;
+}
+
+.custom-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.custom-checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.custom-checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #6c63ff; /* Cor personalizada para o checkbox */
+}
+
+#cnh-categoria-editar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    appearance: none; /* Remove o estilo padrão do select */
+    cursor: pointer;
+}
+
+#cnh-categoria-editar:hover {
+    border-color: #b00000; /* Cor de borda ao passar o mouse */
+}
+
+#cnh-categoria-editar:focus {
+    outline: none;
+    border-color: #750000; /* Cor de borda ao focar */
+    box-shadow: 0 0 5px rgba(117, 0, 0, 0.5); /* Efeito de foco */
+}
+
+.status-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.status-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8f8f8;
+    color: #666;
+}
+
+.status-btn i {
+    font-size: 16px;
+}
+
+.status-btn.ativo {
+    color: #28a745;
+}
+
+.status-btn.inativo {
+    color: #dc3545;
+}
+
+.status-btn.ferias {
+    color: #ffc107;
+}
+
+.status-btn:hover {
+    background-color: #f1f1f1;
+}
+
+.status-btn.active {
+    border-color: currentColor;
+    background-color: #eafaf1;
+}
+
+#modal-confirmacao .modal-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#modal-confirmacao .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#modal-confirmacao .modal-header h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+}
+
+#modal-confirmacao .modal-header .close {
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+
+#modal-confirmacao .modal-body p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#modal-confirmacao .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+#modal-confirmacao .btn-cancelar {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#modal-confirmacao .btn-cancelar:hover {
+    background-color: #c82333;
+}
+
+#modal-confirmacao .btn-salvar {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#modal-confirmacao .btn-salvar:hover {
+    background-color: #218838;
+}
+#modal-massivo .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão de Modo Dark */
+.modo-dark-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.modo-dark-btn.dark {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Modo Dark para o conteúdo */
+body.dark-mode .conteudo {
+    background-color: #121212; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Modo Dark para os containers */
+body.dark-mode .container {
+    background-color: #1e1e1e; /* Fundo escuro dos containers */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #333; /* Borda escura */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra leve */
+}
+
+/* Modo Dark para a tabela */
+body.dark-mode .tabela-container {
+    background-color: #1e1e1e; /* Fundo escuro do container da tabela */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #333; /* Borda escura */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra leve */
+}
+
+body.dark-mode .tabela-usuarios {
+    background-color: #1e1e1e; /* Fundo escuro da tabela */
+    color: #ffffff; /* Texto branco */
+    border-collapse: collapse;
+}
+
+body.dark-mode .tabela-usuarios th {
+    background-color: #333; /* Fundo escuro do cabeçalho */
+    color: #ffffff; /* Texto branco */
+    border-bottom: 1px solid #444; /* Borda escura */
+}
+
+body.dark-mode .tabela-usuarios td {
+    background-color: #2a2a2a; /* Fundo escuro das células */
+    color: #ffffff; /* Texto branco */
+    border-bottom: 1px solid #444; /* Borda escura */
+}
+
+body.dark-mode .tabela-usuarios tr:hover {
+    background-color: #333; /* Fundo mais claro ao passar o mouse */
+}
+
+/* Modo Dark para os status */
+body.dark-mode .status.ativo {
+    color: #28a745; /* Verde para status ativo */
+    background-color: #1e1e1e; /* Fundo escuro */
+    border: 1px solid #28a745;
+}
+
+body.dark-mode .status.ferias {
+    color: #ffc107; /* Amarelo para status férias */
+    background-color: #1e1e1e; /* Fundo escuro */
+    border: 1px solid #ffc107;
+}
+
+/* Modo Dark para os inputs */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #2a2a2a; /* Fundo escuro dos inputs */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #444; /* Borda escura */
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Placeholder no modo dark */
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #888; /* Cor do placeholder */
+}
+
+/* Modo Dark para os botões */
+body.dark-mode .btn {
+    background-color: #333; /* Fundo escuro dos botões */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #555; /* Borda escura */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .btn:hover {
+    background-color: #444; /* Fundo mais claro ao passar o mouse */
+}
+
+/* Modo Dark para os títulos */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
+    color: #ffffff; /* Títulos em branco */
+}
+
+/* Modo Dark para os textos explicativos */
+body.dark-mode p {
+    color: #cccccc; /* Texto explicativo em cinza claro */
+}
+
+/* Modo Dark para o container de listagem de usuários */
+body.dark-mode .listagem-usuarios {
+    background-color: #1e1e1e; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #333; /* Borda escura */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra leve */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 15px; /* Espaçamento interno */
+}
+
+/* Modo Dark para os títulos dentro do container */
+body.dark-mode .listagem-usuarios h2 {
+    color: #ffffff; /* Títulos em branco */
+}
+
+/* Modo Dark para os textos explicativos */
+body.dark-mode .listagem-usuarios p {
+    color: #cccccc; /* Texto explicativo em cinza claro */
+}
+
+/* Modo Dark para o body */
+body.dark-mode {
+    background-color: #121212; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Modo Dark para o .filtros-container */
+body.dark-mode .filtros-container {
+    background-color: #1e1e1e; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #333; /* Borda escura */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra leve */
+}
+
+/* Modo Dark para o modal */
+body.dark-mode .modal-content {
+    background-color: #1e1e1e; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #333; /* Borda escura */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Sombra leve */
+}
+
+/* Modo Dark para o cabeçalho do modal */
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #444; /* Borda escura */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Modo Dark para o corpo do modal */
+body.dark-mode .modal-body {
+    color: #cccccc; /* Texto em cinza claro */
+}
+
+/* Modo Dark para os botões no modal */
+body.dark-mode .modal-content .btn {
+    background-color: #333; /* Fundo escuro dos botões */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #555; /* Borda escura */
+}
+
+body.dark-mode .modal-content .btn:hover {
+    background-color: #444; /* Fundo mais claro ao passar o mouse */
+}
+
+/* Modo Dark para os títulos dos inputs dentro do modal */
+body.dark-mode .modal-content label {
+    color: #ffffff; /* Títulos dos inputs em branco */
+}
+
+/* Modo Dark para o modal de confirmação */
+body.dark-mode #modal-confirmacao .modal-content {
+    background-color: #1e1e1e; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #333; /* Borda escura */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Sombra leve */
+}
+
+/* Modo Dark para o cabeçalho do modal de confirmação */
+body.dark-mode #modal-confirmacao .modal-header {
+    border-bottom: 1px solid #444; /* Borda escura */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Modo Dark para o corpo do modal de confirmação */
+body.dark-mode #modal-confirmacao .modal-body {
+    color: #cccccc; /* Texto em cinza claro */
+}
+
+/* Modo Dark para os botões no modal de confirmação */
+body.dark-mode #modal-confirmacao .btn-cancelar {
+    background-color: #333; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #555; /* Borda escura */
+}
+
+body.dark-mode #modal-confirmacao .btn-cancelar:hover {
+    background-color: #444; /* Fundo mais claro ao passar o mouse */
+}
+
+body.dark-mode #modal-confirmacao .btn-salvar {
+    background-color: #333; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    border: 1px solid #555; /* Borda escura */
+}
+
+body.dark-mode #modal-confirmacao .btn-salvar:hover {
+    background-color: #444; /* Fundo mais claro ao passar o mouse */
+}
+
+/* Modo Dark para os títulos no modal de confirmação */
+body.dark-mode #modal-confirmacao .modal-header h2 {
+    color: #ffffff; /* Títulos em branco */
+}
+
+/* Modo Dark para os textos no corpo do modal de confirmação */
+body.dark-mode #modal-confirmacao .modal-body p {
+    color: #ffffff; /* Textos em branco */
+}
+
+/* Modo Dark para os títulos dos inputs no container de filtros */
+body.dark-mode .filtros-container label {
+    color: #ffffff; /* Títulos dos inputs em branco */
+}
+
+/* Estilo para a linha inativada */
+.linha-inativa {
+    background-color: rgba(244, 67, 54, 0.1); /* Vermelho leve */
+    color: #F44336; /* Texto em vermelho */
+}
+
+.linha-inativa td {
+    text-decoration: line-through; /* Adiciona um risco no texto */
+}
+
+/* Modo Dark para a linha inativada */
+body.dark-mode .linha-inativa {
+    background-color: rgba(244, 67, 54, 0.18); /* Vermelho mais visível no dark */
+    color: #ff6f6f; /* Vermelho claro para texto */
+}
+
+body.dark-mode .linha-inativa td {
+    text-decoration: line-through;
+    color: #ff6f6f; /* Garante texto vermelho claro nas células */
+}
+
+/* Modo Dark para o scrollbar */
+body.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+    background: #232323;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 8px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* Firefox */
+body.dark-mode {
+    scrollbar-color: #444 #232323;
+    scrollbar-width: thin;
+}
+
+/* Font size and font family adjustments */
+.tabela-custom th, .tabela-custom td,
+.tabela-usuarios th, .tabela-usuarios td {
+    font-size: 0.75rem !important;
+    font-family: sans-serif !important;
+}
+.tabela-custom th, .tabela-custom td {
+    white-space: nowrap;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 0.85rem;
+}
+
+/* Centraliza a tabela no container */
+.tabela-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Tabela compacta, quadrada, mas cabeçalho arredondado */
+.tabela-usuarios,
+.tabela-custom {
+    margin: 0 auto;
+    border-radius: 0 0 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    min-width: 900px; /* Garante largura para todos os campos */
+    max-width: 100%;
+}
+
+/* Cabeçalho arredondado */
+.tabela-usuarios th:first-child,
+.tabela-custom th:first-child {
+    border-top-left-radius: 12px !important;
+}
+.tabela-usuarios th:last-child,
+.tabela-custom th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+/* Remove arredondamento dos outros cantos */
+.tabela-usuarios th,
+.tabela-custom th {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+/* Compacta as linhas */
+.tabela-usuarios th, .tabela-usuarios td,
+.tabela-custom th, .tabela-custom td {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+    vertical-align: middle;
+    background: #fff;
+    white-space: nowrap;
+}
+
+.tabela-usuarios th, .tabela-custom th {
+    background: #B00000 !important;
+    color: #fff !important;
+    font-weight: 700;
+    border-bottom: 2px solid #b00000;
+    border-right: 1px solid #b00000;
+    text-transform: none !important;
+    letter-spacing: 0.5px;
+}
+
+.tabela-usuarios th:last-child, .tabela-custom th:last-child,
+.tabela-usuarios td:last-child, .tabela-custom td:last-child {
+    border-right: none;
+}
+
+.tabela-usuarios tr:last-child td,
+.tabela-custom tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-usuarios tr:hover,
+.tabela-custom tr:hover {
+    background: #f7f7f7;
+}
